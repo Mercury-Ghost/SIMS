@@ -12,17 +12,14 @@ void clearScreen() {
 }
 
 /**
- * 暂停并提示按任意键继续
+ * 暂停并提示按enter键继续
  */
 void pauseConsole() {
-    printf("\n按任意键继续...");
+    printf("\n按enter键继续...");
     // 清除输入缓冲区中的残留字符
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-    // 等待用户输入任意键
+    fflush(stdin);
+    // 等待用户输入enter键
     getchar();
-    // 再次清除输入缓冲区，防止影响后续输入
-    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 /**
