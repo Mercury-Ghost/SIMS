@@ -16,8 +16,13 @@ void clearScreen() {
  */
 void pauseConsole() {
     printf("\n按任意键继续...");
+    // 清除输入缓冲区中的残留字符
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+    // 等待用户输入任意键
     getchar();
-    getchar();
+    // 再次清除输入缓冲区，防止影响后续输入
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 /**
