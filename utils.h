@@ -7,10 +7,10 @@
 #include <ctype.h>
 
 // 常量定义
-#define MAX_NAME_LEN 20
-#define MAX_CONTENT_LEN 100
-#define PAGE_SIZE 5        // 每页显示条数
-#define MAX_INPUT 256
+#define MAX_NAME_LEN 20     // 最大姓名长度
+#define MAX_CONTENT_LEN 100 // 最大内容长度
+#define PAGE_SIZE 5         // 每页显示条数
+#define MAX_INPUT 256       // 最大输入长度
 
 // 清屏（跨平台）
 void clearScreen();

@@ -1,6 +1,10 @@
 #include "file.h"
 #include <stdio.h>
 
+/**
+ * 从二进制文件加载学生链表
+ * @return 加载的学生链表头指针
+ */
 StuNode *loadStudentsFromFile() {
     FILE *fp = fopen("students.dat", "rb");
     if (!fp) {
@@ -30,6 +34,10 @@ StuNode *loadStudentsFromFile() {
     return head;
 }
 
+/**
+ * 保存学生链表到二进制文件
+ * @param head 学生链表头指针
+ */
 void saveStudentsToFile(StuNode *head) {
     FILE *fp = fopen("students.dat", "wb");
     if (!fp) {

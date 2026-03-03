@@ -4,8 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+// 全局变量初始化
 AppealNode *appealHead = NULL;
 
+/**
+ * 从appeals.txt加载申诉
+ */
 void loadAppeals() {
     FILE *fp = fopen("appeals.txt", "r");
     if (!fp) return;
@@ -25,6 +29,9 @@ void loadAppeals() {
     fclose(fp);
 }
 
+/**
+ * 保存申诉到appeals.txt
+ */
 void saveAppeals() {
     FILE *fp = fopen("appeals.txt", "w");
     if (!fp) return;
@@ -36,6 +43,11 @@ void saveAppeals() {
     fclose(fp);
 }
 
+/**
+ * 添加申诉（学生端）
+ * @param stuId 学生学号
+ * @param content 申诉内容
+ */
 void addAppeal(int stuId, const char *content) {
     AppealNode *newNode = (AppealNode*)malloc(sizeof(AppealNode));
     newNode->studentId = stuId;
@@ -46,9 +58,12 @@ void addAppeal(int stuId, const char *content) {
     appealHead = newNode;
     saveAppeals();
     printf("申诉已提交。\n");
-    // TODO: commit point
 }
 
+/**
+ * 获取未处理申诉数量
+ * @return 未处理申诉数量
+ */
 int getPendingAppealCount() {
     int cnt = 0;
     AppealNode *cur = appealHead;
@@ -59,19 +74,10 @@ int getPendingAppealCount() {
     return cnt;
 }
 
+/**
+ * 显示所有申诉（翻页）
+ */
 void showAllAppeals() {
-    // 将申诉转换为数组或直接利用翻页函数
-    // 简单起见，这里直接显示全部，但为了复用翻页，我们构建一个字符串数组？
-    // 但page模块需要处理双向链表，我们可重新实现翻页，或使用简单打印。
-    // 为了符合需求，我们实现一个翻页显示函数在page.c中，可显示任意节点列表。
-    // 这里我们简单打印，后续可扩展。但要求是翻页显示，所以我们调用page模块的通用翻页函数。
-    // 定义显示回调：
-    void printAppealNode(void *data) {
-        AppealNode *a = (AppealNode*)data;
-        printf("学号: %d, 内容: %s, 状态: %s\n", a->studentId, a->content, a->status ? "已处理" : "未处理");
-    }
-    // 但page.h需要接受链表头，我们暂时简单实现翻页。
-    // 为了快速完成，我们直接分页打印。
     AppealNode *cur = appealHead;
     int total = 0;
     while (cur) { total++; cur = cur->next; }
@@ -102,6 +108,10 @@ void showAllAppeals() {
     }
 }
 
+/**
+ * 标记申诉为已处理
+ * @param stuId 学生学号
+ */
 void markAppealProcessed(int stuId) {
     AppealNode *cur = appealHead;
     while (cur) {

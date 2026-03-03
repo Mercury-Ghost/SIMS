@@ -4,9 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+// 全局变量初始化
 UserNode *userHead = NULL;
 User currentUser;
 
+/**
+ * 从users.txt加载所有用户
+ */
 void loadUsers() {
     FILE *fp = fopen("users.txt", "r");
     if (!fp) {
@@ -35,6 +39,9 @@ void loadUsers() {
     fclose(fp);
 }
 
+/**
+ * 保存所有用户到users.txt
+ */
 void saveUsers() {
     FILE *fp = fopen("users.txt", "w");
     if (!fp) {
@@ -50,6 +57,14 @@ void saveUsers() {
     fclose(fp);
 }
 
+/**
+ * 注册新用户
+ * @param username 用户名
+ * @param password 密码
+ * @param role 角色
+ * @param studentId 学生学号（仅学生角色需要）
+ * @return 注册成功返回1，失败返回0
+ */
 int registerUser(const char *username, const char *password, int role, int studentId) {
     if (findUserByUsername(username) != NULL) {
         printf("用户名已存在！\n");
@@ -72,9 +87,15 @@ int registerUser(const char *username, const char *password, int role, int stude
     saveUsers();
     printf("注册成功！\n");
     return 1;
-    // TODO: commit point
 }
 
+/**
+ * 登录验证
+ * @param username 用户名
+ * @param password 密码
+ * @param role 角色
+ * @return 登录成功返回1，失败返回0
+ */
 int loginUser(const char *username, const char *password, int role) {
     UserNode *cur = userHead;
     while (cur) {
@@ -89,6 +110,11 @@ int loginUser(const char *username, const char *password, int role) {
     return 0;
 }
 
+/**
+ * 按用户名查找用户节点
+ * @param username 用户名
+ * @return 找到的用户节点指针，未找到返回NULL
+ */
 UserNode *findUserByUsername(const char *username) {
     UserNode *cur = userHead;
     while (cur) {
@@ -98,6 +124,11 @@ UserNode *findUserByUsername(const char *username) {
     return NULL;
 }
 
+/**
+ * 修改密码
+ * @param userNode 用户节点
+ * @param newPass 新密码
+ */
 void changePassword(UserNode *userNode, const char *newPass) {
     if (userNode) {
         strcpy(userNode->user.password, newPass);
@@ -106,6 +137,11 @@ void changePassword(UserNode *userNode, const char *newPass) {
     }
 }
 
+/**
+ * 管理员重置用户密码
+ * @param username 用户名
+ * @param newPass 新密码
+ */
 void adminResetPassword(const char *username, const char *newPass) {
     UserNode *u = findUserByUsername(username);
     if (u) {
@@ -117,6 +153,11 @@ void adminResetPassword(const char *username, const char *newPass) {
     }
 }
 
+/**
+ * 管理员删除用户
+ * @param username 用户名
+ * @return 删除成功返回1，失败返回0
+ */
 int deleteUser(const char *username) {
     UserNode *cur = userHead, *prev = NULL;
     while (cur) {
@@ -135,6 +176,9 @@ int deleteUser(const char *username) {
     return 0;
 }
 
+/**
+ * 释放用户链表
+ */
 void freeUsers() {
     UserNode *cur = userHead;
     while (cur) {

@@ -12,6 +12,9 @@
 // 全局学生头指针，在main.c中定义
 extern StuNode *stuHead;
 
+/**
+ * 显示登录界面
+ */
 void loginMenu() {
     int choice;
     do {
@@ -69,9 +72,11 @@ void loginMenu() {
                 pauseConsole();
         }
     } while (choice != 3);
-    // TODO: commit point (登录退出)
 }
 
+/**
+ * 学生主菜单
+ */
 void studentMenu() {
     int choice;
     do {

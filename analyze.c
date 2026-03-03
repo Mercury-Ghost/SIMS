@@ -1,6 +1,10 @@
 #include "analyze.h"
 #include <stdio.h>
 
+/**
+ * 打印字符条状图（给定分数，打印#个数）
+ * @param score 分数
+ */
 void printBarChart(float score) {
     int len = (int)(score / 5); // 每5分一个#，20个满
     if (len > 40) len = 40;     // 最大限制
@@ -10,6 +14,10 @@ void printBarChart(float score) {
     printf("] %.2f\n", score);
 }
 
+/**
+ * 统计全班成绩：平均分、最高、最低、各分数段人数，并打印条状图
+ * @param head 学生链表头指针
+ */
 void analyzeClass(StuNode *head) {
     if (!head) {
         printf("暂无学生数据。\n");
@@ -42,6 +50,12 @@ void analyzeClass(StuNode *head) {
     printf("90-100:"); for (int i=0; i<level[4]; i++) putchar('#'); printf(" (%d人)\n", level[4]);
 }
 
+/**
+ * 获取某个学生的班内排名（按成绩降序）
+ * @param head 学生链表头指针
+ * @param stuId 学生学号
+ * @return 排名，未找到返回-1
+ */
 int getRank(StuNode *head, int stuId) {
     // 先按成绩降序排序（复制一份或临时排序？）这里简单做法：遍历计数比它高的
     float score = 0;
@@ -57,6 +71,10 @@ int getRank(StuNode *head, int stuId) {
     return rank;
 }
 
+/**
+ * 打印全班排名（降序）
+ * @param head 学生链表头指针
+ */
 void printRanking(StuNode *head) {
     if (!head) { printf("无数据。\n"); return; }
     // 复制链表或使用临时数组

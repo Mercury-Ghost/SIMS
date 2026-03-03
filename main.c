@@ -6,20 +6,24 @@
 #include "utils.h"
 
 // 全局变量定义
-StuNode *stuHead = NULL;
+StuNode *stuHead = NULL;  // 学生链表头指针
 
+/**
+ * 主函数
+ * @return 程序退出状态码
+ */
 int main() {
     // 加载数据
-    stuHead = loadStudentsFromFile();
-    loadUsers();
-    loadAppeals();
+    stuHead = loadStudentsFromFile();  // 从文件加载学生数据
+    loadUsers();                      // 加载用户数据
+    loadAppeals();                    // 加载申诉数据
 
     // 进入登录界面
     loginMenu();
 
     // 释放资源
-    freeList(stuHead);
-    freeUsers();  // 需要实现freeUsers函数，已在user.h声明
+    freeList(stuHead);   // 释放学生链表内存
+    freeUsers();         // 释放用户链表内存
     // 申诉链表也需释放，简单起见在freeUsers类似处理，但未定义，可加
     // 这里略，实际可以加一个freeAppeals，但为了简洁，不处理也无大碍。
     return 0;

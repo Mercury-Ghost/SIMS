@@ -3,24 +3,27 @@
 
 #include "utils.h"
 
-#define ROLE_STUDENT 0
-#define ROLE_TEACHER 1
-#define ROLE_ADMIN   2
+// 用户角色定义
+#define ROLE_STUDENT 0    // 学生角色
+#define ROLE_TEACHER 1    // 教师角色
+#define ROLE_ADMIN   2    // 管理员角色
 
+// 用户结构体
 typedef struct User {
-    char username[20];
-    char password[20];
-    int role;          // 0学生,1教师,2管理员
-    int studentId;     // 学生关联学号，教师/管理员为-1
+    char username[20];    // 用户名
+    char password[20];    // 密码
+    int role;             // 角色：0学生,1教师,2管理员
+    int studentId;        // 学生关联学号，教师/管理员为-1
 } User;
 
-// 全局用户数组（动态？）这里简单用链表存储
+// 用户节点结构体（用于链表存储）
 typedef struct UserNode {
-    User user;
-    struct UserNode *next;
+    User user;            // 用户信息
+    struct UserNode *next; // 下一个节点指针
 } UserNode;
 
-extern UserNode *userHead;
+// 全局变量
+extern UserNode *userHead;     // 用户链表头指针
 extern User currentUser;        // 当前登录用户信息
 
 // 从users.txt加载所有用户

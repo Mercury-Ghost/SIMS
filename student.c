@@ -3,6 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * 创建学生节点
+ * @param id 学号
+ * @param name 姓名
+ * @param score 成绩
+ * @return 创建的学生节点指针
+ */
 StuNode *createStuNode(int id, const char *name, float score) {
     StuNode *newNode = (StuNode*)malloc(sizeof(StuNode));
     if (!newNode) {
@@ -18,6 +25,14 @@ StuNode *createStuNode(int id, const char *name, float score) {
     return newNode;
 }
 
+/**
+ * 添加学生到链表末尾
+ * @param head 链表头指针
+ * @param id 学号
+ * @param name 姓名
+ * @param score 成绩
+ * @return 更新后的链表头指针
+ */
 StuNode *addStudent(StuNode *head, int id, const char *name, float score) {
     StuNode *newNode = createStuNode(id, name, score);
     if (head == NULL) {
@@ -32,6 +47,12 @@ StuNode *addStudent(StuNode *head, int id, const char *name, float score) {
     return head;
 }
 
+/**
+ * 根据学号删除学生
+ * @param head 链表头指针
+ * @param id 要删除的学号
+ * @return 更新后的链表头指针
+ */
 StuNode *deleteById(StuNode *head, int id) {
     StuNode *cur = head;
     while (cur) {
@@ -49,6 +70,12 @@ StuNode *deleteById(StuNode *head, int id) {
     return head;
 }
 
+/**
+ * 根据学号查找学生
+ * @param head 链表头指针
+ * @param id 要查找的学号
+ * @return 找到的学生节点指针，未找到返回NULL
+ */
 StuNode *findById(StuNode *head, int id) {
     StuNode *cur = head;
     while (cur) {
@@ -58,6 +85,11 @@ StuNode *findById(StuNode *head, int id) {
     return NULL;
 }
 
+/**
+ * 根据姓名模糊查找学生
+ * @param head 链表头指针
+ * @param name 要查找的姓名关键字
+ */
 void findByName(StuNode *head, const char *name) {
     StuNode *cur = head;
     int found = 0;
@@ -71,6 +103,12 @@ void findByName(StuNode *head, const char *name) {
     if (!found) printf("未找到姓名包含 '%s' 的学生。\n", name);
 }
 
+/**
+ * 更新学生信息
+ * @param node 要更新的学生节点
+ * @param newName 新姓名
+ * @param newScore 新成绩
+ */
 void updateStudent(StuNode *node, const char *newName, float newScore) {
     if (node) {
         strncpy(node->name, newName, 19);
@@ -80,6 +118,11 @@ void updateStudent(StuNode *node, const char *newName, float newScore) {
     }
 }
 
+/**
+ * 获取链表长度
+ * @param head 链表头指针
+ * @return 链表长度
+ */
 int getLength(StuNode *head) {
     int cnt = 0;
     StuNode *cur = head;
@@ -90,6 +133,15 @@ int getLength(StuNode *head) {
     return cnt;
 }
 
+/**
+ * 在指定位置插入学生
+ * @param head 链表头指针
+ * @param pos 插入位置（从1开始）
+ * @param id 学号
+ * @param name 姓名
+ * @param score 成绩
+ * @return 更新后的链表头指针
+ */
 StuNode *insertAtPosition(StuNode *head, int pos, int id, const char *name, float score) {
     if (pos < 1 || pos > getLength(head) + 1) {
         printf("位置无效。\n");
@@ -113,6 +165,10 @@ StuNode *insertAtPosition(StuNode *head, int pos, int id, const char *name, floa
     return head;
 }
 
+/**
+ * 释放链表内存
+ * @param head 链表头指针
+ */
 void freeList(StuNode *head) {
     StuNode *cur = head;
     while (cur) {
@@ -122,6 +178,11 @@ void freeList(StuNode *head) {
     }
 }
 
+/**
+ * 按成绩排序
+ * @param head 链表头指针
+ * @param ascending 1为升序，0为降序
+ */
 void sortByScore(StuNode *head, int ascending) {
     if (!head) return;
     int swapped;

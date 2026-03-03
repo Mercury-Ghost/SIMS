@@ -3,14 +3,16 @@
 
 #include "utils.h"
 
+// 申诉节点结构体
 typedef struct Appeal {
-    int studentId;
-    char content[100];
-    int status; // 0未处理，1已处理
-    struct Appeal *next;
+    int studentId;       // 学生学号
+    char content[100];   // 申诉内容
+    int status;          // 状态：0未处理，1已处理
+    struct Appeal *next; // 下一个节点指针
 } AppealNode;
 
-extern AppealNode *appealHead;
+// 全局变量
+extern AppealNode *appealHead; // 申诉链表头指针
 
 // 从appeals.txt加载申诉
 void loadAppeals();

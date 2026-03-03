@@ -2,6 +2,10 @@
 #include "utils.h"
 #include <stdio.h>
 
+/**
+ * 显示学生列表（翻页）
+ * @param head 学生链表头指针
+ */
 void showStudentsPage(StuNode *head) {
     if (!head) {
         printf("暂无学生数据。\n");
