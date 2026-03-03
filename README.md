@@ -1,137 +1,170 @@
-# 学生信息管理系统
+# SIMS - 学生信息管理系统
 
-## 项目概述
+## 项目简介
 
-这是一个基于C语言开发的学生信息管理系统，采用纯终端界面，实现了学生、教师和管理员三种角色的功能。系统使用双向链表存储学生信息，支持翻页显示，并通过二进制文件持久化存储学生数据。
-
-## 功能特点
-
-### 1. 登录注册功能
-- 支持学生、教师、管理员三种角色的注册和登录
-- 学生注册需关联已存在的学号
-- 提供密码修改和找回功能
-
-### 2. 角色功能
-
-#### 学生端
-- 成绩查询：查看自己的所有科目成绩
-- 班内排名：按单科或总分排名，显示自己在班内的名次
-- 查询本班成绩：翻页浏览同班其他同学的成绩
-- 提交成绩申诉：对成绩提出申诉，保存到文件
-- 密码修改：修改自己的登录密码
-- 成绩分析：以字符条状图展示自己的成绩
-
-#### 教师端
-- 增删改查学生信息：完整管理学生信息，实时同步到二进制文件
-- 查看班内成绩：翻页形式展示全班学生成绩
-- 学生信息下载：将学生数据导出为CSV文本文件
-- 成绩分析：统计全班平均分、最高分、最低分、各分数段人数，并用字符条状图展示分布
-- 密码修改：修改自己的登录密码
-
-#### 管理员端
-- 查看代办：显示未处理的成绩申诉数量
-- 成绩申诉管理：查看所有申诉，支持标记为"已处理"
-- 增删改查账密以及学生信息：管理所有用户账号和学生基本信息
-- 密码修改：修改自己的登录密码
-- 从文件录入所有账号密码：批量导入用户数据
-- 从文件导出所有账号密码：将当前所有用户导出到文本文件
-- 登录教师端进行信息更改：直接切换到教师端操作界面
-
-### 3. 核心功能
-- 双向链表实现：支持任意位置插入、删除操作
-- 二进制文件存储：学生数据使用二进制文件`students.dat`存储
-- 翻页功能：每页显示固定条数，支持上一页/下一页
-- 数据统计：计算总数、平均分、最高/低分、不及格人数等
-- 数据排序：支持按成绩升序和降序排序
-- 成绩分析：生成字符条状图展示成绩分布
+SIMS（Student Information Management System）是一个基于C语言开发的学生信息管理系统，旨在为学校提供一个简单、高效的学生信息管理解决方案。系统支持学生信息的增删改查、用户管理、申诉处理等功能，并具有不同角色的权限管理。
 
 ## 系统架构
 
-采用三层架构设计：
-- **界面层**：负责用户交互和菜单显示
-- **业务逻辑层**：处理核心业务逻辑
-- **数据持久化层**：负责数据的读写和存储
+### 核心模块
 
-## 文件结构
+- **学生信息管理**：处理学生基本信息和成绩的管理
+- **用户管理**：管理不同角色的用户账号
+- **申诉管理**：处理学生的申诉请求
+- **文件操作**：负责数据的持久化存储
+- **UI界面**：提供用户交互界面
+- **工具函数**：提供通用功能支持
+- **数据分析**：提供数据统计和分析功能
+- **页面管理**：处理分页显示功能
+
+### 系统角色
+
+- **学生**：查看个人信息，提交申诉
+- **教师**：管理学生信息，处理申诉
+- **管理员**：管理所有用户，拥有最高权限
+
+## 目录结构
 
 ```
-学生信息管理系统/
-├── main.c             # 主函数，登录界面及角色菜单分发
-├── student.h          # 学生结构体定义和链表操作声明
-├── student.c          # 链表操作实现
-├── user.h             # 用户结构体定义和用户管理声明
-├── user.c             # 用户管理、登录注册实现
-├── file.h             # 文件操作声明
-├── file.c             # 学生二进制文件读写实现
-├── ui.h               # 界面相关声明
-├── ui.c               # 各角色菜单显示、用户交互实现
-├── utils.h            # 辅助函数声明
-├── utils.c            # 辅助函数实现（清屏、暂停、安全输入等）
-├── analyze.h          # 统计分析相关声明
-├── analyze.c          # 统计、排名、条状图生成实现
-├── page.h             # 翻页功能声明
-├── page.c             # 翻页显示功能实现
-├── appeal.h           # 申诉管理声明
-├── appeal.c           # 申诉管理实现
-├── users.txt          # 用户账号信息文件
-├── students.dat       # 学生信息二进制文件
-└── appeals.txt        # 成绩申诉文件
+SIMS/
+├── analyze.c        # 数据分析模块
+├── analyze.h
+├── appeal.c         # 申诉管理模块
+├── appeal.h
+├── file.c           # 文件操作模块
+├── file.h
+├── main.c           # 主程序入口
+├── page.c           # 页面管理模块
+├── page.h
+├── student.c        # 学生信息管理模块
+├── student.h
+├── student_sys.exe  # 可执行文件
+├── ui.c             # 界面模块
+├── ui.h
+├── user.c           # 用户管理模块
+├── user.h
+├── users.txt        # 用户数据文件
+├── utils.c          # 工具函数模块
+└── utils.h
 ```
 
-## 编译运行
+## 主要功能
+
+### 1. 学生信息管理
+- 添加学生信息
+- 删除学生信息
+- 修改学生信息
+- 查询学生信息（按ID或姓名）
+- 学生成绩排序
+- 学生信息统计分析
+
+### 2. 用户管理
+- 用户登录
+- 用户注册
+- 修改密码
+- 管理员重置用户密码
+- 管理员删除用户
+
+### 3. 申诉管理
+- 学生提交申诉
+- 查看申诉列表
+- 标记申诉为已处理
+- 统计未处理申诉数量
+
+### 4. 数据持久化
+- 自动加载数据文件
+- 自动保存数据到文件
+- 支持数据的备份和恢复
+
+## 技术特点
+
+- **纯C语言实现**：无需额外依赖，跨平台兼容性好
+- **模块化设计**：各功能模块独立封装，便于维护和扩展
+- **数据结构**：使用链表存储数据，操作灵活高效
+- **权限控制**：基于角色的权限管理，确保数据安全
+- **用户友好**：清晰的命令行界面，操作简单直观
+
+## 编译与运行
 
 ### 编译
-在项目目录下执行以下命令：
+
+使用C编译器编译所有源文件：
 
 ```bash
-gcc *.c -o student_sys.exe
+gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c analyze.c page.c
 ```
 
 ### 运行
+
 直接运行生成的可执行文件：
 
 ```bash
-student_sys.exe
+./student_sys.exe
 ```
 
 ## 使用说明
 
+1. **登录系统**：运行程序后，输入用户名和密码登录
+2. **选择角色**：根据提示选择相应的角色（学生、教师、管理员）
+3. **功能操作**：根据角色权限，选择相应的功能进行操作
+4. **退出系统**：完成操作后，选择退出选项
+
 ### 初始账号
-系统默认创建以下账号：
-- 管理员：用户名`admin`，密码`admin`，角色`管理员`
-- 教师：用户名`teacher`，密码`teacher`，角色`教师`
-- 学生：需先注册，注册时需关联已存在的学号
 
-### 操作流程
-1. 运行程序，进入登录界面
-2. 选择角色并输入用户名和密码登录
-3. 根据角色进入对应菜单，执行相应操作
-4. 操作完成后，返回上一级菜单或退出系统
+- **管理员**：用户名：admin，密码：admin
+- **教师**：用户名：teacher，密码：teacher
+- **学生**：系统初始无学生账号，需要通过注册或管理员添加
 
-### 数据文件
-- **students.dat**：二进制文件，存储学生信息
-- **users.txt**：文本文件，存储用户账号信息，格式为每行`用户名 密码 角色 学号`
-- **appeals.txt**：文本文件，存储成绩申诉信息
+## 数据文件说明
+
+- **users.txt**：存储用户账号信息
+- **students.txt**：存储学生信息（系统自动生成）
+- **appeals.txt**：存储申诉信息（系统自动生成）
 
 ## 注意事项
 
-1. 学生注册时需确保学号已存在于系统中
-2. 密码为明文存储，仅用于演示
-3. 学生数据每次增删改操作后会立即保存到二进制文件
-4. 翻页功能每页显示5条记录，可通过修改`PAGE_SIZE`宏调整
-5. 成绩分析功能使用字符条状图展示，每10分一个级别
-
-## 代码说明
-
-- 代码中在每完成一个大功能处添加了注释`// TODO: commit point`，提示使用Git提交
-- 采用模块化设计，拆分为多个`.c`和`.h`文件
-- 遵循C语言代码风格规范，变量和函数命名清晰
-- 包含必要的错误处理，确保程序稳定性
+1. 系统使用简单的文件存储，不支持并发操作
+2. 密码以明文形式存储，仅用于演示，实际应用中应加密存储
+3. 数据文件应妥善保管，避免误删除
+4. 系统未实现网络功能，仅支持本地运行
 
 ## 扩展建议
 
-1. 增加多科目成绩管理
-2. 实现更安全的密码存储方式（如加密）
-3. 添加数据库支持，提高数据存储效率
-4. 开发图形界面，提升用户体验
-5. 增加数据备份和恢复功能
+1. 添加数据库支持，提高数据存储的可靠性和效率
+2. 实现网络功能，支持多用户同时访问
+3. 增加更多数据分析和报表功能
+4. 开发图形化界面，提升用户体验
+5. 添加数据备份和恢复机制
+
+## 许可证
+
+本项目采用 MIT 许可证开源。
+
+### MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## 作者
+
+- 项目维护者：Mercury-Ghost
+- 联系邮箱：sbc0124@outlook.com
+
+---
+
+? 2026 SIMS 学生信息管理系统
