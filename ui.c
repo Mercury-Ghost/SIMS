@@ -19,23 +19,38 @@ void loginMenu() {
     int choice;
     do {
         clearScreen();
-        printf("===== 学生信息管理系统 =====\n");
+        printf("====================================\n");
+        printf("        学生信息管理系统        \n");
+        printf("====================================\n");
         printf("1. 登录\n");
         printf("2. 注册\n");
         printf("3. 退出\n");
+        printf("====================================\n");
         printf("请选择: ");
         choice = readInt();
         switch (choice) {
             case 1: {
                 char username[20], password[20];
-                int role;
-                printf("用户名: ");
-                safeInput(username, sizeof(username));
-                printf("密码: ");
-                safeInput(password, sizeof(password));
-                printf("角色 (0学生 1教师 2管理员): ");
-                role = readInt();
-                if (loginUser(username, password, role)) {
+                do {
+                    printf("用户名: ");
+                    safeInput(username, sizeof(username));
+                    if (!isValidUsername(username)) {
+                        printf("用户名无效！用户名只能包含字母、数字和下划线，长度1-20。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
+                do {
+                    printf("密码: ");
+                    safeInput(password, sizeof(password));
+                    if (!isValidPassword(password)) {
+                        printf("密码无效！密码长度至少6位。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
+                int role = loginUser(username, password);
+                if (role != -1) {
                     printf("登录成功！\n");
                     pauseConsole();
                     if (role == ROLE_STUDENT) studentMenu();
@@ -50,15 +65,39 @@ void loginMenu() {
             case 2: {
                 char username[20], password[20];
                 int role, stuId = -1;
-                printf("用户名: ");
-                safeInput(username, sizeof(username));
-                printf("密码: ");
-                safeInput(password, sizeof(password));
-                printf("角色 (0学生 1教师 2管理员): ");
-                role = readInt();
+                do {
+                    printf("用户名: ");
+                    safeInput(username, sizeof(username));
+                    if (!isValidUsername(username)) {
+                        printf("用户名无效！用户名只能包含字母、数字和下划线，长度1-20。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
+                do {
+                    printf("密码: ");
+                    safeInput(password, sizeof(password));
+                    if (!isValidPassword(password)) {
+                        printf("密码无效！密码长度至少6位。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
+                do {
+                    printf("角色 (0学生 1教师 2管理员): ");
+                    role = readInt();
+                    if (role < 0 || role > 2) {
+                        printf("角色无效！请输入0-2之间的数字。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
                 if (role == ROLE_STUDENT) {
-                    printf("请输入你的学号: ");
-                    stuId = readInt();
+                    do {
+                        printf("请输入你的学号: ");
+                        stuId = readInt();
+                        break;
+                    } while (1);
                 }
                 registerUser(username, password, role, stuId);
                 pauseConsole();
@@ -81,14 +120,17 @@ void studentMenu() {
     int choice;
     do {
         clearScreen();
-        printf("===== 学生端 [%s] =====\n", currentUser.username);
+        printf("====================================\n");
+        printf("          学生端 - %s          \n", currentUser.username);
+        printf("====================================\n");
         printf("1. 成绩查询\n");
         printf("2. 班内排名\n");
-        printf("3. 查询本班成绩（翻页）\n");
+        printf("3. 查询本班成绩\n");
         printf("4. 提交成绩申诉\n");
         printf("5. 修改密码\n");
         printf("6. 成绩分析（条状图）\n");
         printf("7. 返回登录\n");
+        printf("====================================\n");
         printf("请选择: ");
         choice = readInt();
         switch (choice) {
@@ -157,13 +199,16 @@ void teacherMenu() {
     int choice;
     do {
         clearScreen();
-        printf("===== 教师端 [%s] =====\n", currentUser.username);
+        printf("====================================\n");
+        printf("          教师端 - %s          \n", currentUser.username);
+        printf("====================================\n");
         printf("1. 增删改查学生信息\n");
-        printf("2. 查看班内成绩（翻页）\n");
+        printf("2. 查看班内成绩\n");
         printf("3. 学生信息下载至CSV\n");
         printf("4. 成绩分析\n");
         printf("5. 修改密码\n");
         printf("6. 返回登录\n");
+        printf("====================================\n");
         printf("请选择: ");
         choice = readInt();
         switch (choice) {
@@ -172,7 +217,9 @@ void teacherMenu() {
                 int sub;
                 do {
                     clearScreen();
-                    printf("--- 学生信息管理 ---\n");
+                    printf("====================================\n");
+                    printf("         学生信息管理         \n");
+                    printf("====================================\n");
                     printf("1. 添加学生\n");
                     printf("2. 按学号删除\n");
                     printf("3. 修改学生信息\n");
@@ -181,6 +228,7 @@ void teacherMenu() {
                     printf("6. 插入到指定位置\n");
                     printf("7. 按成绩排序（升序/降序）\n");
                     printf("8. 返回上级\n");
+                    printf("====================================\n");
                     printf("请选择: ");
                     sub = readInt();
                     switch (sub) {
@@ -192,7 +240,14 @@ void teacherMenu() {
                                 break;
                             }
                             printf("姓名: "); safeInput(name, sizeof(name));
-                            printf("成绩: "); scanf("%f", &score); getchar();
+                            do {
+                                printf("成绩: "); score = readFloat();
+                                if (!isValidScore(score)) {
+                                    printf("成绩无效！请输入0-100之间的数字。\n");
+                                    continue;
+                                }
+                                break;
+                            } while (1);
                             stuHead = addStudent(stuHead, id, name, score);
                             saveStudentsToFile(stuHead);
                             printf("添加成功。\n");
@@ -213,9 +268,17 @@ void teacherMenu() {
                             StuNode *node = findById(stuHead, id);
                             if (node) {
                                 printf("新姓名: "); safeInput(name, sizeof(name));
-                                printf("新成绩: "); scanf("%f", &score); getchar();
+                                do {
+                                    printf("新成绩: "); score = readFloat();
+                                    if (!isValidScore(score)) {
+                                        printf("成绩无效！请输入0-100之间的数字。\n");
+                                        continue;
+                                    }
+                                    break;
+                                } while (1);
                                 updateStudent(node, name, score);
                                 saveStudentsToFile(stuHead);
+                                printf("修改成功。\n");
                             } else printf("学号不存在。\n");
                             pauseConsole();
                             break;
@@ -237,11 +300,26 @@ void teacherMenu() {
                         }
                         case 6: {
                             int pos, id; char name[20]; float score;
-                            printf("插入位置 (1~%d): ", getLength(stuHead)+1); pos = readInt();
+                            int maxPos = getLength(stuHead) + 1;
+                            do {
+                                printf("插入位置 (1~%d): ", maxPos); pos = readInt();
+                                if (pos < 1 || pos > maxPos) {
+                                    printf("位置无效！请输入1-%d之间的数字。\n", maxPos);
+                                    continue;
+                                }
+                                break;
+                            } while (1);
                             printf("学号: "); id = readInt();
                             if (findById(stuHead, id)) { printf("学号已存在。\n"); break; }
                             printf("姓名: "); safeInput(name, sizeof(name));
-                            printf("成绩: "); scanf("%f", &score); getchar();
+                            do {
+                                printf("成绩: "); score = readFloat();
+                                if (!isValidScore(score)) {
+                                    printf("成绩无效！请输入0-100之间的数字。\n");
+                                    continue;
+                                }
+                                break;
+                            } while (1);
                             stuHead = insertAtPosition(stuHead, pos, id, name, score);
                             saveStudentsToFile(stuHead);
                             printf("插入成功。\n");
@@ -307,7 +385,6 @@ void teacherMenu() {
                 pauseConsole();
         }
     } while (1);
-    // TODO: commit point (教师功能点)
 }
 
 void adminMenu() {
@@ -315,7 +392,9 @@ void adminMenu() {
     do {
         clearScreen();
         int pending = getPendingAppealCount();
-        printf("===== 管理员端 [%s] =====\n", currentUser.username);
+        printf("====================================\n");
+        printf("          管理员端 - %s          \n", currentUser.username);
+        printf("====================================\n");
         if (pending > 0) printf("【待办】有 %d 条未处理的申诉\n", pending);
         printf("1. 查看代办（申诉管理）\n");
         printf("2. 账号管理\n");
@@ -324,6 +403,7 @@ void adminMenu() {
         printf("5. 进入教师端操作\n");
         printf("6. 修改密码\n");
         printf("7. 返回登录\n");
+        printf("====================================\n");
         printf("请选择: ");
         choice = readInt();
         switch (choice) {
@@ -343,12 +423,15 @@ void adminMenu() {
                 int sub;
                 do {
                     clearScreen();
-                    printf("--- 账号管理 ---\n");
+                    printf("====================================\n");
+                    printf("          账号管理          \n");
+                    printf("====================================\n");
                     printf("1. 查看所有用户\n");
                     printf("2. 添加用户\n");
                     printf("3. 删除用户\n");
                     printf("4. 重置用户密码\n");
                     printf("5. 返回上级\n");
+                    printf("====================================\n");
                     printf("请选择: ");
                     sub = readInt();
                     switch (sub) {

@@ -33,7 +33,7 @@ void saveUsers();
 // 注册新用户
 int registerUser(const char *username, const char *password, int role, int studentId);
 // 登录验证
-int loginUser(const char *username, const char *password, int role);
+int loginUser(const char *username, const char *password);
 // 按用户名查找用户节点
 UserNode *findUserByUsername(const char *username);
 // 修改密码

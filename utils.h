@@ -22,5 +22,15 @@ void safeInput(char *buffer, int size);
 int isNumber(const char *str);
 // 从标准输入读取一个整数（带错误处理）
 int readInt();
+// 验证学号是否有效
+int isValidStudentId(const char *str);
+// 验证成绩是否在有效范围内
+int isValidScore(float score);
+// 验证用户名是否有效
+int isValidUsername(const char *str);
+// 验证密码是否有效
+int isValidPassword(const char *str);
+// 从标准输入读取一个浮点数（带错误处理）
+float readFloat();
 
 #endif

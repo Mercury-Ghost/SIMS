@@ -93,21 +93,19 @@ int registerUser(const char *username, const char *password, int role, int stude
  * 登录验证
  * @param username 用户名
  * @param password 密码
- * @param role 角色
- * @return 登录成功返回1，失败返回0
+ * @return 登录成功返回用户角色，失败返回-1
  */
-int loginUser(const char *username, const char *password, int role) {
+int loginUser(const char *username, const char *password) {
     UserNode *cur = userHead;
     while (cur) {
         if (strcmp(cur->user.username, username) == 0 &&
-            strcmp(cur->user.password, password) == 0 &&
-            cur->user.role == role) {
+            strcmp(cur->user.password, password) == 0) {
             currentUser = cur->user;
-            return 1;
+            return cur->user.role;
         }
         cur = cur->next;
     }
-    return 0;
+    return -1;
 }
 
 /**

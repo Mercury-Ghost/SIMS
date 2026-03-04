@@ -105,9 +105,8 @@ gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c anal
 ## 使用说明
 
 1. **登录系统**：运行程序后，输入用户名和密码登录
-2. **选择角色**：根据提示选择相应的角色（学生、教师、管理员）
-3. **功能操作**：根据角色权限，选择相应的功能进行操作
-4. **退出系统**：完成操作后，选择退出选项
+2. **功能操作**：系统会自动判断用户角色，根据角色权限，选择相应的功能进行操作
+3. **退出系统**：完成操作后，选择退出选项
 
 ### 初始账号
 
@@ -118,7 +117,7 @@ gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c anal
 ## 数据文件说明
 
 - **users.txt**：存储用户账号信息
-- **students.txt**：存储学生信息（系统自动生成）
+- **students.dat**：存储学生信息（二进制文件，系统自动生成）
 - **appeals.txt**：存储申诉信息（系统自动生成）
 
 ## 注意事项
