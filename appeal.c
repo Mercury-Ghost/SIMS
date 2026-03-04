@@ -29,9 +29,13 @@ void loadAppeals() {
                 while (token) {
                     lastToken = token;
                     if (len > 0) content[len++] = ' ';
-                    strncpy(content + len, token, sizeof(content) - len - 1);
-                    len += strlen(token);
-                    content[len] = '\0';
+                    size_t token_len = strlen(token);
+                    if (len + token_len >= sizeof(content)) {
+                        token_len = sizeof(content) - len - 1;
+                    }
+                    strncpy(content + len, token, token_len);
+                    content[len + token_len] = '\0'; // 在strncpy后立即添加null终止符
+                    len += token_len;
                     token = strtok(NULL, " ");
                 }
                 if (lastToken) {
