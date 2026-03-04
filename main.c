@@ -24,7 +24,6 @@ int main() {
     // 释放资源
     freeList(stuHead);   // 释放学生链表内存
     freeUsers();         // 释放用户链表内存
-    // 申诉链表也需释放，简单起见在freeUsers类似处理，但未定义，可加
-    // 这里略，实际可以加一个freeAppeals，但为了简洁，不处理也无大碍。
+    freeAppeals();       // 释放申诉链表内存
     return 0;
 }

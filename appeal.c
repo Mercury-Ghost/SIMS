@@ -17,14 +17,42 @@ void loadAppeals() {
     while (fgets(line, sizeof(line), fp)) {
         int id, status;
         char content[100];
-        // 格式: 学号 内容 状态，内容中无空格
-        sscanf(line, "%d %s %d", &id, content, &status);
-        AppealNode *newNode = (AppealNode*)malloc(sizeof(AppealNode));
-        newNode->studentId = id;
-        strcpy(newNode->content, content);
-        newNode->status = status;
-        newNode->next = appealHead;
-        appealHead = newNode;
+        // 格式: 学号 内容 状态，内容中可以包含空格
+        char *token = strtok(line, " ");
+        if (token) {
+            id = atoi(token);
+            token = strtok(NULL, " ");
+            if (token) {
+                // 读取所有内容，直到最后一个空格
+                int len = 0;
+                char *lastToken = NULL;
+                while (token) {
+                    lastToken = token;
+                    if (len > 0) content[len++] = ' ';
+                    strncpy(content + len, token, sizeof(content) - len - 1);
+                    len += strlen(token);
+                    content[len] = '\0';
+                    token = strtok(NULL, " ");
+                }
+                if (lastToken) {
+                    // 最后一个token是状态
+                    status = atoi(lastToken);
+                    // 从内容中移除最后一个token
+                    len -= strlen(lastToken);
+                    if (len > 0 && content[len-1] == ' ') {
+                        len--;
+                    }
+                    content[len] = '\0';
+                    AppealNode *newNode = (AppealNode*)malloc(sizeof(AppealNode));
+                    newNode->studentId = id;
+                    strncpy(newNode->content, content, 99);
+                    newNode->content[99] = '\0';
+                    newNode->status = status;
+                    newNode->next = appealHead;
+                    appealHead = newNode;
+                }
+            }
+        }
     }
     fclose(fp);
 }
@@ -124,4 +152,18 @@ void markAppealProcessed(int stuId) {
         cur = cur->next;
     }
     printf("未找到该学号的未处理申诉。\n");
+}
+
+/**
+ * 释放申诉链表内存
+ */
+void freeAppeals() {
+    if (!appealHead) return; // 空指针检查
+    AppealNode *cur = appealHead;
+    while (cur) {
+        AppealNode *tmp = cur;
+        cur = cur->next;
+        free(tmp);
+    }
+    appealHead = NULL;
 }

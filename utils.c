@@ -111,10 +111,18 @@ int isValidUsername(const char *str) {
  * 验证密码是否有效
  * @param str 密码
  * @return 有效返回1，否则返回0
+ * @note 密码策略：
+ *       1. 密码长度：任意长度
+ *       2. 允许字符：字母（大小写）、数字、下划线
+ *       3. 不允许特殊字符和空格
  */
 int isValidPassword(const char *str) {
-    // 密码长度至少6位
-    return strlen(str) >= 6;
+    // 密码可以是任意长度，但只能包含字母、数字和下划线
+    while (*str) {
+        if (!isalnum(*str) && *str != '_') return 0;
+        str++;
+    }
+    return 1;
 }
 
 /**

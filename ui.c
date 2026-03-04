@@ -44,7 +44,7 @@ void loginMenu() {
                     printf("密码: ");
                     safeInput(password, sizeof(password));
                     if (!isValidPassword(password)) {
-                        printf("密码无效！密码长度至少6位。\n");
+                        printf("密码无效！密码只能包含字母、数字和下划线。\n");
                         continue;
                     }
                     break;
@@ -78,7 +78,7 @@ void loginMenu() {
                     printf("密码: ");
                     safeInput(password, sizeof(password));
                     if (!isValidPassword(password)) {
-                        printf("密码无效！密码长度至少6位。\n");
+                        printf("密码无效！密码只能包含字母、数字和下划线。\n");
                         continue;
                     }
                     break;
@@ -169,8 +169,15 @@ void studentMenu() {
             }
             case 5: {
                 char newPass[20];
-                printf("请输入新密码: ");
-                safeInput(newPass, sizeof(newPass));
+                do {
+                    printf("请输入新密码: ");
+                    safeInput(newPass, sizeof(newPass));
+                    if (!isValidPassword(newPass)) {
+                        printf("密码无效！密码只能包含字母、数字和下划线。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
                 UserNode *me = findUserByUsername(currentUser.username);
                 if (me) changePassword(me, newPass);
                 pauseConsole();
@@ -371,8 +378,15 @@ void teacherMenu() {
                 break;
             case 5: {
                 char newPass[20];
-                printf("请输入新密码: ");
-                safeInput(newPass, sizeof(newPass));
+                do {
+                    printf("请输入新密码: ");
+                    safeInput(newPass, sizeof(newPass));
+                    if (!isValidPassword(newPass)) {
+                        printf("密码无效！密码只能包含字母、数字和下划线。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
                 UserNode *me = findUserByUsername(currentUser.username);
                 if (me) changePassword(me, newPass);
                 pauseConsole();
@@ -475,7 +489,14 @@ void adminMenu() {
                         case 4: {
                             char un[20], newpw[20];
                             printf("用户名: "); safeInput(un, sizeof(un));
-                            printf("新密码: "); safeInput(newpw, sizeof(newpw));
+                            do {
+                                printf("新密码: "); safeInput(newpw, sizeof(newpw));
+                                if (!isValidPassword(newpw)) {
+                                    printf("密码无效！密码只能包含字母、数字和下划线。\n");
+                                    continue;
+                                }
+                                break;
+                            } while (1);
                             adminResetPassword(un, newpw);
                             pauseConsole();
                             break;
@@ -544,8 +565,15 @@ void adminMenu() {
                 break;
             case 6: {
                 char newPass[20];
-                printf("请输入新密码: ");
-                safeInput(newPass, sizeof(newPass));
+                do {
+                    printf("请输入新密码: ");
+                    safeInput(newPass, sizeof(newPass));
+                    if (!isValidPassword(newPass)) {
+                        printf("密码无效！密码只能包含字母、数字和下划线。\n");
+                        continue;
+                    }
+                    break;
+                } while (1);
                 UserNode *me = findUserByUsername(currentUser.username);
                 if (me) changePassword(me, newPass);
                 pauseConsole();

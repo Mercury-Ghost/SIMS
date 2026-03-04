@@ -26,5 +26,7 @@ int getPendingAppealCount();
 void showAllAppeals();
 // 标记申诉为已处理
 void markAppealProcessed(int stuId); // 简单起见，通过学号匹配第一个未处理申诉
+// 释放申诉链表内存
+void freeAppeals();
 
 #endif
