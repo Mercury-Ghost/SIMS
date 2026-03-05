@@ -685,8 +685,13 @@ void adminMenu() {
                 if (fp) {
                     UserNode *cur = userHead;
                     while (cur) {
-                        fprintf(fp, "%s %s %d %d\n", cur->user.username, cur->user.password,
-                                cur->user.role, cur->user.studentId);
+                        if (fprintf(fp, "%s %s %d %d\n", cur->user.username, cur->user.password,
+                                cur->user.role, cur->user.studentId) < 0) {
+                            fclose(fp);
+                            printf("导出用户数据失败！\n");
+                            pauseConsole();
+                            break;
+                        }
                         cur = cur->next;
                     }
                     fclose(fp);

@@ -1,4 +1,5 @@
 #include "file.h"
+#include "utils.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -52,8 +53,8 @@ StuNode *loadStudentsFromFile() {
         float score;
         size_t read = fread(&id, sizeof(int), 1, fp);
         if (read != 1) break;
-        fread(name, sizeof(char), 20, fp);
-        fread(&score, sizeof(float), 1, fp);
+        if (fread(name, sizeof(char), 20, fp) != 20) break;
+        if (fread(&score, sizeof(float), 1, fp) != 1) break;
         StuNode *newNode = createStuNode(id, name, score);
         if (!head) {
             head = tail = newNode;
@@ -79,9 +80,18 @@ void saveStudentsToFile(StuNode *head) {
     }
     StuNode *cur = head;
     while (cur) {
-        fwrite(&cur->id, sizeof(int), 1, fp);
-        fwrite(cur->name, sizeof(char), 20, fp);
-        fwrite(&cur->score, sizeof(float), 1, fp);
+        if (fwrite(&cur->id, sizeof(int), 1, fp) != 1) {
+            handleWriteError(fp, "保存学生学号数据失败！");
+            return;
+        }
+        if (fwrite(cur->name, sizeof(char), 20, fp) != 20) {
+            handleWriteError(fp, "保存学生姓名数据失败！");
+            return;
+        }
+        if (fwrite(&cur->score, sizeof(float), 1, fp) != 1) {
+            handleWriteError(fp, "保存学生成绩数据失败！");
+            return;
+        }
         cur = cur->next;
     }
     fclose(fp);
@@ -91,7 +101,10 @@ void saveStudentsToFile(StuNode *head) {
     if (fp) {
         cur = head;
         while (cur) {
-            fprintf(fp, "%d %s %.2f\n", cur->id, cur->name, cur->score);
+            if (fprintf(fp, "%d %s %.2f\n", cur->id, cur->name, cur->score) < 0) {
+                handleWriteError(fp, "保存学生文本数据失败！");
+                return;
+            }
             cur = cur->next;
         }
         fclose(fp);
@@ -175,12 +188,20 @@ int exportStudentsToCSV(const char *filename, StuNode *head) {
     }
     
     // 写入表头
-    fprintf(fp, "学号,姓名,成绩\n");
+    if (fprintf(fp, "学号,姓名,成绩\n") < 0) {
+        fclose(fp);
+        printf("导出CSV文件失败！\n");
+        return -1;
+    }
     
     int count = 0;
     StuNode *cur = head;
     while (cur) {
-        fprintf(fp, "%d,%s,%.2f\n", cur->id, cur->name, cur->score);
+        if (fprintf(fp, "%d,%s,%.2f\n", cur->id, cur->name, cur->score) < 0) {
+            fclose(fp);
+            printf("导出CSV文件失败！\n");
+            return -1;
+        }
         cur = cur->next;
         count++;
     }

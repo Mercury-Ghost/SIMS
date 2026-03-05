@@ -19,7 +19,11 @@ void loadUsers() {
             printf("无法创建用户文件！\n");
             exit(1);
         }
-        fprintf(fp, "admin admin 2 -1\n");
+        if (fprintf(fp, "admin admin 2 -1\n") < 0) {
+            fclose(fp);
+            printf("无法写入用户文件！\n");
+            exit(1);
+        }
         fclose(fp);
         fp = fopen("users.txt", "r");
     }
@@ -50,8 +54,12 @@ void saveUsers() {
     }
     UserNode *cur = userHead;
     while (cur) {
-        fprintf(fp, "%s %s %d %d\n", cur->user.username, cur->user.password,
-                cur->user.role, cur->user.studentId);
+        if (fprintf(fp, "%s %s %d %d\n", cur->user.username, cur->user.password,
+                cur->user.role, cur->user.studentId) < 0) {
+            fclose(fp);
+            printf("保存用户数据失败！\n");
+            return;
+        }
         cur = cur->next;
     }
     fclose(fp);

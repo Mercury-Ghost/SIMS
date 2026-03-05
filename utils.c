@@ -163,3 +163,15 @@ float readFloat() {
     }
     return atof(input);
 }
+
+/**
+ * 处理写入错误
+ * @param fp 文件指针
+ * @param msg 错误消息
+ * @return 总是返回false
+ */
+bool handleWriteError(FILE *fp, const char *msg) {
+    fclose(fp);
+    printf("%s\n", msg);
+    return false;
+}

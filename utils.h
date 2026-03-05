@@ -32,5 +32,7 @@ int isValidUsername(const char *str);
 int isValidPassword(const char *str);
 // 从标准输入读取一个浮点数（带错误处理）
 float readFloat();
+// 处理写入错误
+bool handleWriteError(FILE *fp, const char *msg);
 
 #endif

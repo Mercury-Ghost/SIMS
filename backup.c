@@ -1,5 +1,6 @@
 #include "backup.h"
 #include "file.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -34,15 +35,23 @@ bool backupData(StuNode *head) {
     // 备份学生数据
     StuNode *cur = head;
     while (cur) {
-        fwrite(&cur->id, sizeof(int), 1, fp);
-        fwrite(cur->name, sizeof(char), 20, fp);
-        fwrite(&cur->score, sizeof(float), 1, fp);
+        if (fwrite(&cur->id, sizeof(int), 1, fp) != 1) {
+            return handleWriteError(fp, "备份失败！");
+        }
+        if (fwrite(cur->name, sizeof(char), 20, fp) != 20) {
+            return handleWriteError(fp, "备份失败！");
+        }
+        if (fwrite(&cur->score, sizeof(float), 1, fp) != 1) {
+            return handleWriteError(fp, "备份失败！");
+        }
         cur = cur->next;
     }
     
     // 写入结束标记
     int end_marker = -1;
-    fwrite(&end_marker, sizeof(int), 1, fp);
+    if (fwrite(&end_marker, sizeof(int), 1, fp) != 1) {
+        return handleWriteError(fp, "备份失败！");
+    }
     
     fclose(fp);
     printf("备份成功！备份文件：%s\n", filename);
@@ -79,8 +88,8 @@ bool restoreData(const char *filename, StuNode **head) {
         char name[20];
         float score;
         
-        fread(name, sizeof(char), 20, fp);
-        fread(&score, sizeof(float), 1, fp);
+        if (fread(name, sizeof(char), 20, fp) != 20) break;
+        if (fread(&score, sizeof(float), 1, fp) != 1) break;
         
         StuNode *newNode = createStuNode(id, name, score);
         if (!newNode) continue;
@@ -128,13 +137,15 @@ void autoBackup(StuNode *head) {
     
     if (need_backup) {
         if (backupData(head)) {
-            // 更新最后备份日期
-            fp = fopen(last_backup_file, "w");
-            if (fp) {
-                fprintf(fp, "%s\n", today);
-                fclose(fp);
+                // 更新最后备份日期
+                fp = fopen(last_backup_file, "w");
+                if (fp) {
+                    if (fprintf(fp, "%s\n", today) < 0) {
+                        printf("更新备份日期失败！\n");
+                    }
+                    fclose(fp);
+                }
             }
-        }
     }
 }
 

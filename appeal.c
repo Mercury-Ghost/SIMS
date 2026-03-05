@@ -1,5 +1,6 @@
 #include "appeal.h"
 #include "page.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -69,7 +70,10 @@ void saveAppeals() {
     if (!fp) return;
     AppealNode *cur = appealHead;
     while (cur) {
-        fprintf(fp, "%d %s %d\n", cur->studentId, cur->content, cur->status);
+        if (fprintf(fp, "%d %s %d\n", cur->studentId, cur->content, cur->status) < 0) {
+            handleWriteError(fp, "±£´æÉêËßÊý¾ÝÊ§°Ü£¡");
+            return;
+        }
         cur = cur->next;
     }
     fclose(fp);
