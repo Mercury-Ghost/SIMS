@@ -35,5 +35,9 @@ StuNode *insertAtPosition(StuNode *head, int pos, int id, const char *name, floa
 void freeList(StuNode *head);
 // 按成绩排序
 void sortByScore(StuNode *head, int ascending);
+// 多条件查询学生
+StuNode *queryStudents(StuNode *head, const char *name, int minId, int maxId, float minScore, float maxScore);
+// 按指定字段排序查询结果
+void sortQueryResults(StuNode *head, const char *field, int ascending);
 
 #endif

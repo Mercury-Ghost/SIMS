@@ -1,5 +1,6 @@
 #include "file.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * 从文本文件加载学生链表
@@ -95,4 +96,95 @@ void saveStudentsToFile(StuNode *head) {
         }
         fclose(fp);
     }
+}
+
+/**
+ * 从CSV文件批量导入学生数据
+ * @param filename CSV文件名
+ * @param head 学生链表头指针的指针
+ * @return 导入的学生数量，失败返回-1
+ */
+int importStudentsFromCSV(const char *filename, StuNode **head) {
+    FILE *fp = fopen(filename, "r");
+    if (!fp) {
+        printf("无法打开CSV文件！\n");
+        return -1;
+    }
+    
+    int count = 0;
+    char line[256];
+    
+    // 跳过表头
+    if (fgets(line, sizeof(line), fp) == NULL) {
+        fclose(fp);
+        return 0;
+    }
+    
+    while (fgets(line, sizeof(line), fp)) {
+        int id;
+        char name[20];
+        float score;
+        
+        // 解析CSV行
+        char *token = strtok(line, ",");
+        if (!token) continue;
+        id = atoi(token);
+        
+        token = strtok(NULL, ",");
+        if (!token) continue;
+        strncpy(name, token, sizeof(name) - 1);
+        name[sizeof(name) - 1] = '\0';
+        
+        token = strtok(NULL, ",");
+        if (!token) continue;
+        score = atof(token);
+        
+        // 创建新节点并添加到链表
+        StuNode *newNode = createStuNode(id, name, score);
+        if (!newNode) continue;
+        
+        if (!*head) {
+            *head = newNode;
+        } else {
+            StuNode *tail = *head;
+            while (tail->next) {
+                tail = tail->next;
+            }
+            tail->next = newNode;
+            newNode->prev = tail;
+        }
+        
+        count++;
+    }
+    
+    fclose(fp);
+    return count;
+}
+
+/**
+ * 将学生数据导出为CSV格式
+ * @param filename CSV文件名
+ * @param head 学生链表头指针
+ * @return 导出的学生数量，失败返回-1
+ */
+int exportStudentsToCSV(const char *filename, StuNode *head) {
+    FILE *fp = fopen(filename, "w");
+    if (!fp) {
+        printf("无法创建CSV文件！\n");
+        return -1;
+    }
+    
+    // 写入表头
+    fprintf(fp, "学号,姓名,成绩\n");
+    
+    int count = 0;
+    StuNode *cur = head;
+    while (cur) {
+        fprintf(fp, "%d,%s,%.2f\n", cur->id, cur->name, cur->score);
+        cur = cur->next;
+        count++;
+    }
+    
+    fclose(fp);
+    return count;
 }

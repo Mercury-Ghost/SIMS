@@ -4,6 +4,7 @@
 #include "appeal.h"
 #include "ui.h"
 #include "utils.h"
+#include "backup.h"
 
 // 全局变量定义
 StuNode *stuHead = NULL;  // 学生链表头指针
@@ -17,6 +18,9 @@ int main() {
     stuHead = loadStudentsFromFile();  // 从文件加载学生数据
     loadUsers();                      // 加载用户数据
     loadAppeals();                    // 加载申诉数据
+
+    // 执行自动备份
+    autoBackup(stuHead);
 
     // 进入登录界面
     loginMenu();

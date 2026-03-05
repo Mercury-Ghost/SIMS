@@ -9,5 +9,9 @@ StuNode *loadStudentsFromTextFile();
 StuNode *loadStudentsFromFile();
 // 保存学生链表到二进制文件
 void saveStudentsToFile(StuNode *head);
+// 从CSV文件批量导入学生数据
+int importStudentsFromCSV(const char *filename, StuNode **head);
+// 将学生数据导出为CSV格式
+int exportStudentsToCSV(const char *filename, StuNode *head);
 
 #endif

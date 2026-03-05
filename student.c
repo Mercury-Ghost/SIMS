@@ -215,3 +215,118 @@ void sortByScore(StuNode *head, int ascending) {
         lptr = ptr1;
     } while (swapped);
 }
+
+/**
+ * 多条件查询学生
+ * @param head 链表头指针
+ * @param name 姓名关键字（NULL表示不按姓名查询）
+ * @param minId 最小学号（-1表示不限制）
+ * @param maxId 最大学号（-1表示不限制）
+ * @param minScore 最低成绩（-1表示不限制）
+ * @param maxScore 最高成绩（-1表示不限制）
+ * @return 查询结果链表头指针
+ */
+StuNode *queryStudents(StuNode *head, const char *name, int minId, int maxId, float minScore, float maxScore) {
+    StuNode *resultHead = NULL;
+    StuNode *resultTail = NULL;
+    
+    StuNode *cur = head;
+    while (cur) {
+        // 检查姓名条件
+        if (name != NULL && strstr(cur->name, name) == NULL) {
+            cur = cur->next;
+            continue;
+        }
+        
+        // 检查学号条件
+        if (minId != -1 && cur->id < minId) {
+            cur = cur->next;
+            continue;
+        }
+        if (maxId != -1 && cur->id > maxId) {
+            cur = cur->next;
+            continue;
+        }
+        
+        // 检查成绩条件
+        if (minScore != -1 && cur->score < minScore) {
+            cur = cur->next;
+            continue;
+        }
+        if (maxScore != -1 && cur->score > maxScore) {
+            cur = cur->next;
+            continue;
+        }
+        
+        // 满足所有条件，添加到结果链表
+        StuNode *newNode = createStuNode(cur->id, cur->name, cur->score);
+        if (!newNode) {
+            cur = cur->next;
+            continue;
+        }
+        
+        if (!resultHead) {
+            resultHead = resultTail = newNode;
+        } else {
+            resultTail->next = newNode;
+            newNode->prev = resultTail;
+            resultTail = newNode;
+        }
+        
+        cur = cur->next;
+    }
+    
+    return resultHead;
+}
+
+/**
+ * 按指定字段排序查询结果
+ * @param head 查询结果链表头指针
+ * @param field 排序字段（"id", "name", "score"）
+ * @param ascending 1为升序，0为降序
+ */
+void sortQueryResults(StuNode *head, const char *field, int ascending) {
+    if (!head) return;
+    
+    int swapped;
+    StuNode *ptr1;
+    StuNode *lptr = NULL;
+    
+    do {
+        swapped = 0;
+        ptr1 = head;
+        while (ptr1->next != lptr) {
+            int needSwap = 0;
+            
+            if (strcmp(field, "id") == 0) {
+                needSwap = ascending ? (ptr1->id > ptr1->next->id) : (ptr1->id < ptr1->next->id);
+            } else if (strcmp(field, "name") == 0) {
+                int cmp = strcmp(ptr1->name, ptr1->next->name);
+                needSwap = ascending ? (cmp > 0) : (cmp < 0);
+            } else if (strcmp(field, "score") == 0) {
+                needSwap = ascending ? (ptr1->score > ptr1->next->score) : (ptr1->score < ptr1->next->score);
+            }
+            
+            if (needSwap) {
+                // 交换数据域
+                int tmpId = ptr1->id;
+                char tmpName[20];
+                strcpy(tmpName, ptr1->name);
+                float tmpScore = ptr1->score;
+                
+                ptr1->id = ptr1->next->id;
+                strcpy(ptr1->name, ptr1->next->name);
+                ptr1->score = ptr1->next->score;
+                
+                ptr1->next->id = tmpId;
+                strcpy(ptr1->next->name, tmpName);
+                ptr1->next->score = tmpScore;
+                
+                swapped = 1;
+            }
+            
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}

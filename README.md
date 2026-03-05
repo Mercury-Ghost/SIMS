@@ -31,6 +31,8 @@ SIMS/
 ├── analyze.h
 ├── appeal.c         # 申诉管理模块
 ├── appeal.h
+├── backup.c         # 数据备份/恢复模块
+├── backup.h
 ├── file.c           # 文件操作模块
 ├── file.h
 ├── main.c           # 主程序入口
@@ -38,7 +40,7 @@ SIMS/
 ├── page.h
 ├── student.c        # 学生信息管理模块
 ├── student.h
-├── student_sys.exe  # 可执行文件
+├── sims.exe         # 可执行文件
 ├── ui.c             # 界面模块
 ├── ui.h
 ├── user.c           # 用户管理模块
@@ -75,6 +77,9 @@ SIMS/
 - 自动加载数据文件
 - 自动保存数据到文件
 - 支持数据的备份和恢复
+- 批量导入/导出功能
+- 数据备份/恢复功能
+- 多条件查询功能
 
 ## 技术特点
 
@@ -91,7 +96,7 @@ SIMS/
 使用C编译器编译所有源文件：
 
 ```bash
-gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c analyze.c page.c
+gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c analyze.c page.c backup.c
 ```
 
 ### 运行
@@ -99,13 +104,13 @@ gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c anal
 直接运行生成的可执行文件：
 
 ```bash
-./student_sys.exe
+./sims.exe
 ```
 
 ## 使用说明
 
 ### 登录系统
-1. 运行程序：`./student_sys.exe`
+1. 运行程序：`./sims.exe`
 2. 在登录界面输入用户名和密码
 3. 系统会根据角色权限进入相应的功能界面
 
@@ -122,7 +127,9 @@ gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c anal
 2. **删除学生**：选择菜单选项1-2，输入学号，删除对应学生
 3. **修改学生信息**：选择菜单选项1-3，输入学号和新信息，修改学生数据
 4. **成绩排序**：选择菜单选项1-7，选择升序或降序，对学生成绩排序
-5. **导出CSV**：选择菜单选项3，将学生信息导出到students.csv文件
+5. **批量导入/导出**：选择菜单选项3，可从CSV文件导入学生数据或导出学生数据为CSV格式
+6. **数据备份/恢复**：选择菜单选项4，可手动备份数据、从备份文件恢复数据或查看所有备份文件
+7. **多条件查询**：选择菜单选项5，可按姓名、学号、成绩范围等条件查询学生信息，并对结果进行排序
 
 #### 管理员端功能
 1. **申诉管理**：选择菜单选项1，查看所有申诉并标记处理状态
@@ -159,7 +166,6 @@ gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c anal
 2. 实现网络功能，支持多用户同时访问
 3. 增加更多数据分析和报表功能
 4. 开发图形化界面，提升用户体验
-5. 添加数据备份和恢复机制
 
 ## 许可证
 

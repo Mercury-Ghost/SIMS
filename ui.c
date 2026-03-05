@@ -6,6 +6,7 @@
 #include "analyze.h"
 #include "page.h"
 #include "utils.h"
+#include "backup.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -211,10 +212,12 @@ void teacherMenu() {
         printf("====================================\n");
         printf("1. 增删改查学生信息\n");
         printf("2. 查看班内成绩\n");
-        printf("3. 学生信息下载至CSV\n");
-        printf("4. 成绩分析\n");
-        printf("5. 修改密码\n");
-        printf("6. 返回登录\n");
+        printf("3. 批量导入/导出\n");
+        printf("4. 数据备份/恢复\n");
+        printf("5. 多条件查询\n");
+        printf("6. 成绩分析\n");
+        printf("7. 修改密码\n");
+        printf("8. 返回登录\n");
         printf("====================================\n");
         printf("请选择: ");
         choice = readInt();
@@ -355,28 +358,162 @@ void teacherMenu() {
                 showStudentsPage(stuHead);
                 break;
             case 3: {
-                // 导出CSV
-                FILE *fp = fopen("students.csv", "w");
-                if (fp) {
-                    fprintf(fp, "学号,姓名,成绩\n");
-                    StuNode *cur = stuHead;
+                // 批量导入/导出子菜单
+                int sub;
+                do {
+                    clearScreen();
+                    printf("====================================\n");
+                    printf("         批量导入/导出         \n");
+                    printf("====================================\n");
+                    printf("1. 从CSV文件导入学生数据\n");
+                    printf("2. 将学生数据导出为CSV\n");
+                    printf("3. 返回上级\n");
+                    printf("====================================\n");
+                    printf("请选择: ");
+                    sub = readInt();
+                    switch (sub) {
+                        case 1: {
+                            char filename[100];
+                            printf("请输入CSV文件名: ");
+                            safeInput(filename, sizeof(filename));
+                            int count = importStudentsFromCSV(filename, &stuHead);
+                            if (count != -1) {
+                                saveStudentsToFile(stuHead);
+                                printf("成功导入 %d 条学生数据\n", count);
+                            }
+                            pauseConsole();
+                            break;
+                        }
+                        case 2: {
+                            char filename[100];
+                            printf("请输入导出文件名: ");
+                            safeInput(filename, sizeof(filename));
+                            int count = exportStudentsToCSV(filename, stuHead);
+                            if (count != -1) {
+                                printf("成功导出 %d 条学生数据\n", count);
+                            }
+                            pauseConsole();
+                            break;
+                        }
+                        case 3:
+                            break;
+                        default:
+                            printf("无效选项。\n");
+                            pauseConsole();
+                    }
+                } while (sub != 3);
+                break;
+            }
+            case 4: {
+                // 数据备份/恢复子菜单
+                int sub;
+                do {
+                    clearScreen();
+                    printf("====================================\n");
+                    printf("         数据备份/恢复         \n");
+                    printf("====================================\n");
+                    printf("1. 手动备份数据\n");
+                    printf("2. 从备份文件恢复数据\n");
+                    printf("3. 查看所有备份文件\n");
+                    printf("4. 返回上级\n");
+                    printf("====================================\n");
+                    printf("请选择: ");
+                    sub = readInt();
+                    switch (sub) {
+                        case 1:
+                            backupData(stuHead);
+                            pauseConsole();
+                            break;
+                        case 2: {
+                            char filename[100];
+                            printf("请输入备份文件名: ");
+                            safeInput(filename, sizeof(filename));
+                            restoreData(filename, &stuHead);
+                            saveStudentsToFile(stuHead);
+                            pauseConsole();
+                            break;
+                        }
+                        case 3:
+                            listBackupFiles();
+                            pauseConsole();
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            printf("无效选项。\n");
+                            pauseConsole();
+                    }
+                } while (sub != 4);
+                break;
+            }
+            case 5: {
+                // 多条件查询
+                char name[20] = "";
+                int minId = -1, maxId = -1;
+                float minScore = -1, maxScore = -1;
+                
+                printf("请输入查询条件（留空表示不限制）\n");
+                printf("姓名关键字: ");
+                safeInput(name, sizeof(name));
+                
+                printf("最小学号: ");
+                char input[20];
+                safeInput(input, sizeof(input));
+                if (strlen(input) > 0) minId = atoi(input);
+                
+                printf("最大学号: ");
+                safeInput(input, sizeof(input));
+                if (strlen(input) > 0) maxId = atoi(input);
+                
+                printf("最低成绩: ");
+                safeInput(input, sizeof(input));
+                if (strlen(input) > 0) minScore = atof(input);
+                
+                printf("最高成绩: ");
+                safeInput(input, sizeof(input));
+                if (strlen(input) > 0) maxScore = atof(input);
+                
+                StuNode *result = queryStudents(stuHead, strlen(name) > 0 ? name : NULL, minId, maxId, minScore, maxScore);
+                
+                if (result) {
+                    printf("查询结果:\n");
+                    StuNode *cur = result;
                     while (cur) {
-                        fprintf(fp, "%d,%s,%.2f\n", cur->id, cur->name, cur->score);
+                        printf("学号: %d, 姓名: %s, 成绩: %.2f\n", cur->id, cur->name, cur->score);
                         cur = cur->next;
                     }
-                    fclose(fp);
-                    printf("已导出到 students.csv\n");
+                    
+                    // 排序选项
+                    printf("\n是否排序结果？(1是 0否): ");
+                    int sortChoice = readInt();
+                    if (sortChoice == 1) {
+                        printf("排序字段 (id/name/score): ");
+                        char field[10];
+                        safeInput(field, sizeof(field));
+                        printf("排序方式 (1升序 0降序): ");
+                        int ascending = readInt();
+                        sortQueryResults(result, field, ascending == 1);
+                        
+                        printf("\n排序后结果:\n");
+                        cur = result;
+                        while (cur) {
+                            printf("学号: %d, 姓名: %s, 成绩: %.2f\n", cur->id, cur->name, cur->score);
+                            cur = cur->next;
+                        }
+                    }
+                    
+                    freeList(result);
                 } else {
-                    printf("无法创建文件。\n");
+                    printf("未找到符合条件的学生。\n");
                 }
                 pauseConsole();
                 break;
             }
-            case 4:
+            case 6:
                 analyzeClass(stuHead);
                 pauseConsole();
                 break;
-            case 5: {
+            case 7: {
                 char newPass[20];
                 do {
                     printf("请输入新密码: ");
@@ -392,7 +529,7 @@ void teacherMenu() {
                 pauseConsole();
                 break;
             }
-            case 6:
+            case 8:
                 return;
             default:
                 printf("无效选项。\n");
