@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMS - 学生信息管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        dark: '#1e293b',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-graduation-cap text-primary text-2xl"></i>
+                <span class="text-xl font-bold">SIMS</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-primary font-medium hover:text-primary/80 transition-all-300">首页</a>
+                <a href="#features" class="hover:text-primary transition-all-300">功能</a>
+                <a href="#architecture" class="hover:text-primary transition-all-300">架构</a>
+                <a href="#usage" class="hover:text-primary transition-all-300">使用</a>
+                <a href="#download" class="hover:text-primary transition-all-300">下载</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-dark hover:text-primary">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#home" class="text-primary font-medium hover:text-primary/80 transition-all-300">首页</a>
+                <a href="#features" class="hover:text-primary transition-all-300">功能</a>
+                <a href="#architecture" class="hover:text-primary transition-all-300">架构</a>
+                <a href="#usage" class="hover:text-primary transition-all-300">使用</a>
+                <a href="#download" class="hover:text-primary transition-all-300">下载</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页 Hero 区域 -->
+    <section id="home" class="pt-24 pb-16 bg-gradient-to-b from-blue-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-shadow">
+                        <span class="text-primary">SIMS</span> - 学生信息管理系统
+                    </h1>
+                    <p class="text-lg text-secondary mb-6">
+                        基于C语言开发的学生信息管理系统，支持学生信息增删改查、用户管理、申诉处理等功能，具有不同角色的权限管理。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/Mercury-Ghost/SIMS" target="_blank" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all-300 flex items-center">
+                            <i class="fa fa-github mr-2"></i> GitHub
+                        </a>
+                        <a href="#download" class="border border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary/5 transition-all-300 flex items-center">
+                            <i class="fa fa-download mr-2"></i> 下载
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=C%20language%20student%20information%20management%20system%20interface%2C%20command%20line%20interface%2C%20clean%20design%2C%20professional%20look&image_size=square_hd" alt="SIMS 系统界面" class="w-full rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特点 -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">核心功能</h2>
+                <p class="text-secondary max-w-2xl mx-auto">SIMS 提供了全面的学生信息管理功能，满足学校日常管理需求</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 功能卡片 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-user-plus text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">学生信息管理</h3>
+                    <p class="text-secondary">添加、删除、修改学生信息，查询学生信息（按ID或姓名），学生成绩排序，学生信息统计分析</p>
+                </div>
+                <!-- 功能卡片 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-users text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">用户管理</h3>
+                    <p class="text-secondary">用户登录、注册、修改密码，管理员重置用户密码，管理员删除用户</p>
+                </div>
+                <!-- 功能卡片 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-exclamation-triangle text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">申诉管理</h3>
+                    <p class="text-secondary">学生提交申诉，查看申诉列表，标记申诉为已处理，统计未处理申诉数量</p>
+                </div>
+                <!-- 功能卡片 4 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-database text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">数据持久化</h3>
+                    <p class="text-secondary">自动加载数据文件，自动保存数据到文件，支持数据的备份和恢复，批量导入/导出功能</p>
+                </div>
+                <!-- 功能卡片 5 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-bar-chart text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">数据分析</h3>
+                    <p class="text-secondary">提供数据统计和分析功能，帮助学校了解学生整体情况</p>
+                </div>
+                <!-- 功能卡片 6 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-lock text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">权限管理</h3>
+                    <p class="text-secondary">基于角色的权限管理，确保数据安全，不同角色拥有不同的操作权限</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 系统架构 -->
+    <section id="architecture" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">系统架构</h2>
+                <p class="text-secondary max-w-2xl mx-auto">模块化设计，各功能模块独立封装，便于维护和扩展</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">核心模块</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>学生信息管理：处理学生基本信息和成绩的管理</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>用户管理：管理不同角色的用户账号</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>申诉管理：处理学生的申诉请求</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>文件操作：负责数据的持久化存储</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>UI界面：提供用户交互界面</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>工具函数：提供通用功能支持</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>数据分析：提供数据统计和分析功能</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>页面管理：处理分页显示功能</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">系统角色</h3>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-medium text-primary mb-2">学生</h4>
+                                <p class="text-secondary">查看个人信息，提交申诉</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-medium text-accent mb-2">教师</h4>
+                                <p class="text-secondary">管理学生信息，处理申诉</p>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-medium text-purple-600 mb-2">管理员</h4>
+                                <p class="text-secondary">管理所有用户，拥有最高权限</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 使用说明 -->
+    <section id="usage" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">使用说明</h2>
+                <p class="text-secondary max-w-2xl mx-auto">快速上手 SIMS 系统</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 编译与运行 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold mb-4">编译与运行</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium mb-2">编译</h4>
+                            <div class="bg-gray-100 p-3 rounded-lg font-mono text-sm">
+                                gcc -o bin/sims.exe src/main.c src/student.c src/user.c src/file.c src/appeal.c src/ui.c src/utils.c src/analyze.c src/page.c src/backup.c
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2">运行</h4>
+                            <div class="bg-gray-100 p-3 rounded-lg font-mono text-sm">
+                                ./bin/sims.exe
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 初始账号 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold mb-4">初始账号</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center justify-between">
+                            <span>管理员</span>
+                            <span class="font-mono">用户名：admin，密码：admin</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span>教师</span>
+                            <span class="font-mono">用户名：teacher，密码：teacher</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span>学生</span>
+                            <span class="text-secondary">系统初始无学生账号，需要通过注册或管理员添加</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 功能操作示例 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold mb-4">功能操作示例</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium mb-2">学生端功能</h4>
+                            <ul class="list-disc pl-5 text-secondary space-y-1">
+                                <li>成绩查询：选择菜单选项1，系统会显示你的当前成绩</li>
+                                <li>班内排名：选择菜单选项2，系统会显示你在班级中的排名</li>
+                                <li>提交申诉：选择菜单选项4，输入申诉内容，提交成绩申诉</li>
+                                <li>修改密码：选择菜单选项5，输入新密码，完成密码修改</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2">教师端功能</h4>
+                            <ul class="list-disc pl-5 text-secondary space-y-1">
+                                <li>添加学生：选择菜单选项1-1，输入学号、姓名和成绩，添加新学生</li>
+                                <li>删除学生：选择菜单选项1-2，输入学号，删除对应学生</li>
+                                <li>修改学生信息：选择菜单选项1-3，输入学号和新信息，修改学生数据</li>
+                                <li>成绩排序：选择菜单选项1-7，选择升序或降序，对学生成绩排序</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 数据文件说明 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold mb-4">数据文件说明</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center justify-between">
+                            <span>users.txt</span>
+                            <span class="text-secondary">存储用户账号信息</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span>students.dat</span>
+                            <span class="text-secondary">存储学生信息（二进制文件，系统自动生成）</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span>appeals.txt</span>
+                            <span class="text-secondary">存储申诉信息（系统自动生成）</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下载区域 -->
+    <section id="download" class="py-16 bg-gradient-to-b from-blue-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">下载与安装</h2>
+                <p class="text-secondary max-w-2xl mx-auto">获取 SIMS 系统的最新版本</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-8">
+                <a href="https://github.com/Mercury-Ghost/SIMS/archive/refs/heads/main.zip" class="bg-primary text-white px-8 py-4 rounded-lg font-medium hover:bg-primary/90 transition-all-300 flex items-center">
+                    <i class="fa fa-download mr-2"></i> 下载源码
+                </a>
+                <a href="https://github.com/Mercury-Ghost/SIMS" target="_blank" class="border border-primary text-primary px-8 py-4 rounded-lg font-medium hover:bg-primary/5 transition-all-300 flex items-center">
+                    <i class="fa fa-github mr-2"></i> 查看 GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa fa-graduation-cap text-primary text-2xl"></i>
+                        <span class="text-xl font-bold">SIMS</span>
+                    </div>
+                    <p class="text-gray-400 mt-2">学生信息管理系统</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://github.com/Mercury-Ghost/SIMS" target="_blank" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-envelope text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-gray-400">
+                <p>&copy; 2026 SIMS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    // 关闭移动端菜单
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('py-2');
+                nav.classList.remove('py-3');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.add('py-3');
+                nav.classList.remove('py-2');
+            }
+        });
+    </script>
+</body>
+</html>
