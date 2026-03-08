@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 // 常量定义
 #define MAX_NAME_LEN 20     // 最大姓名长度
 #define MAX_CONTENT_LEN 100 // 最大内容长度
 #define PAGE_SIZE 5         // 每页显示条数
 #define MAX_INPUT 256       // 最大输入长度
+#define MAX_PATH_LEN 256    // 最大路径长度
 
 // 清屏（跨平台）
 void clearScreen();
@@ -34,5 +36,15 @@ int isValidPassword(const char *str);
 float readFloat();
 // 处理写入错误
 bool handleWriteError(FILE *fp, const char *msg);
+
+// 路径处理函数
+// 获取项目根目录路径
+void getProjectRoot(char *path, size_t size);
+// 获取数据目录路径
+void getDataDir(char *path, size_t size);
+// 获取bin目录路径
+void getBinDir(char *path, size_t size);
+// 构建完整的文件路径
+void buildFilePath(const char *dir, const char *filename, char *path, size_t size);
 
 #endif

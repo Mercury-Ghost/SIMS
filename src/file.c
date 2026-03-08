@@ -8,7 +8,12 @@
  * @return 加载的学生链表头指针
  */
 StuNode *loadStudentsFromTextFile() {
-    FILE *fp = fopen("students.txt", "r");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "students.txt", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "r");
     if (!fp) {
         // 文件不存在，返回空链表
         return NULL;
@@ -40,7 +45,12 @@ StuNode *loadStudentsFromTextFile() {
  * @return 加载的学生链表头指针
  */
 StuNode *loadStudentsFromFile() {
-    FILE *fp = fopen("students.dat", "rb");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "students.dat", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "rb");
     if (!fp) {
         // 二进制文件不存在，尝试从文本文件加载
         return loadStudentsFromTextFile();
@@ -73,7 +83,12 @@ StuNode *loadStudentsFromFile() {
  * @param head 学生链表头指针
  */
 void saveStudentsToFile(StuNode *head) {
-    FILE *fp = fopen("students.dat", "wb");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "students.dat", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "wb");
     if (!fp) {
         printf("无法打开学生文件保存！\n");
         return;
@@ -97,7 +112,8 @@ void saveStudentsToFile(StuNode *head) {
     fclose(fp);
     
     // 同时保存到文本文件，方便查看
-    fp = fopen("students.txt", "w");
+    buildFilePath(dataDir, "students.txt", filePath, sizeof(filePath));
+    fp = fopen(filePath, "w");
     if (fp) {
         cur = head;
         while (cur) {
@@ -118,7 +134,20 @@ void saveStudentsToFile(StuNode *head) {
  * @return 导入的学生数量，失败返回-1
  */
 int importStudentsFromCSV(const char *filename, StuNode **head) {
-    FILE *fp = fopen(filename, "r");
+    char filePath[MAX_PATH_LEN];
+    
+    // 检查filename是否为绝对路径
+    if (filename[0] == '\\' || (filename[1] == ':' && filename[2] == '\\')) {
+        // 绝对路径，直接使用
+        strncpy(filePath, filename, sizeof(filePath) - 1);
+    } else {
+        // 相对路径，视为相对于data目录
+        char dataDir[MAX_PATH_LEN];
+        getDataDir(dataDir, sizeof(dataDir));
+        buildFilePath(dataDir, filename, filePath, sizeof(filePath));
+    }
+    
+    FILE *fp = fopen(filePath, "r");
     if (!fp) {
         printf("无法打开CSV文件！\n");
         return -1;
@@ -181,7 +210,20 @@ int importStudentsFromCSV(const char *filename, StuNode **head) {
  * @return 导出的学生数量，失败返回-1
  */
 int exportStudentsToCSV(const char *filename, StuNode *head) {
-    FILE *fp = fopen(filename, "w");
+    char filePath[MAX_PATH_LEN];
+    
+    // 检查filename是否为绝对路径
+    if (filename[0] == '\\' || (filename[1] == ':' && filename[2] == '\\')) {
+        // 绝对路径，直接使用
+        strncpy(filePath, filename, sizeof(filePath) - 1);
+    } else {
+        // 相对路径，视为相对于data目录
+        char dataDir[MAX_PATH_LEN];
+        getDataDir(dataDir, sizeof(dataDir));
+        buildFilePath(dataDir, filename, filePath, sizeof(filePath));
+    }
+    
+    FILE *fp = fopen(filePath, "w");
     if (!fp) {
         printf("无法创建CSV文件！\n");
         return -1;

@@ -23,10 +23,15 @@ void generateBackupFilename(char *filename, size_t size) {
  * @return 备份是否成功
  */
 bool backupData(StuNode *head) {
+    char binDir[MAX_PATH_LEN];
     char filename[100];
-    generateBackupFilename(filename, sizeof(filename));
+    char filePath[MAX_PATH_LEN];
     
-    FILE *fp = fopen(filename, "wb");
+    generateBackupFilename(filename, sizeof(filename));
+    getBinDir(binDir, sizeof(binDir));
+    buildFilePath(binDir, filename, filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "wb");
     if (!fp) {
         printf("无法创建备份文件！\n");
         return false;
@@ -54,7 +59,7 @@ bool backupData(StuNode *head) {
     }
     
     fclose(fp);
-    printf("备份成功！备份文件：%s\n", filename);
+    printf("备份成功！备份文件：%s\n", filePath);
     return true;
 }
 
@@ -65,7 +70,20 @@ bool backupData(StuNode *head) {
  * @return 恢复是否成功
  */
 bool restoreData(const char *filename, StuNode **head) {
-    FILE *fp = fopen(filename, "rb");
+    char filePath[MAX_PATH_LEN];
+    
+    // 检查filename是否为绝对路径
+    if (filename[0] == '\\' || (filename[1] == ':' && filename[2] == '\\')) {
+        // 绝对路径，直接使用
+        strncpy(filePath, filename, sizeof(filePath) - 1);
+    } else {
+        // 相对路径，视为相对于bin目录
+        char binDir[MAX_PATH_LEN];
+        getBinDir(binDir, sizeof(binDir));
+        buildFilePath(binDir, filename, filePath, sizeof(filePath));
+    }
+    
+    FILE *fp = fopen(filePath, "rb");
     if (!fp) {
         printf("无法打开备份文件！\n");
         return false;
@@ -114,7 +132,11 @@ bool restoreData(const char *filename, StuNode **head) {
  */
 void autoBackup(StuNode *head) {
     // 检查是否需要自动备份（每天一次）
-    char last_backup_file[100] = "last_backup.txt";
+    char binDir[MAX_PATH_LEN];
+    char last_backup_file[MAX_PATH_LEN];
+    getBinDir(binDir, sizeof(binDir));
+    buildFilePath(binDir, "last_backup.txt", last_backup_file, sizeof(last_backup_file));
+    
     FILE *fp = fopen(last_backup_file, "r");
     
     time_t now = time(NULL);
@@ -153,5 +175,9 @@ void autoBackup(StuNode *head) {
  * 列出所有备份文件
  */
 void listBackupFiles() {
-    system("dir backup_*.dat /B");
+    char binDir[MAX_PATH_LEN];
+    char command[MAX_PATH_LEN + 20];
+    getBinDir(binDir, sizeof(binDir));
+    snprintf(command, sizeof(command), "dir ""%s\\backup_*.dat"" /B", binDir);
+    system(command);
 }

@@ -12,9 +12,14 @@ User currentUser;
  * 从users.txt加载所有用户
  */
 void loadUsers() {
-    FILE *fp = fopen("users.txt", "r");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "users.txt", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "r");
     if (!fp) {
-        fp = fopen("users.txt", "w");
+        fp = fopen(filePath, "w");
         if (!fp) {
             printf("无法创建用户文件！\n");
             exit(1);
@@ -25,7 +30,7 @@ void loadUsers() {
             exit(1);
         }
         fclose(fp);
-        fp = fopen("users.txt", "r");
+        fp = fopen(filePath, "r");
     }
     char line[256];
     while (fgets(line, sizeof(line), fp)) {
@@ -47,7 +52,12 @@ void loadUsers() {
  * 保存所有用户到users.txt
  */
 void saveUsers() {
-    FILE *fp = fopen("users.txt", "w");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "users.txt", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "w");
     if (!fp) {
         printf("无法打开用户文件写入！\n");
         return;

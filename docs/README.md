@@ -1,65 +1,221 @@
-# SIMS 项目网站
+# SIMS - 学生信息管理系统
 
-这是 SIMS（学生信息管理系统）的项目介绍网站，使用 GitHub Pages 部署。
+## 项目简介
 
-## 网站结构
+SIMS（Student Information Management System）是一个基于C语言开发的学生信息管理系统，旨在为学校提供一个简单、高效的学生信息管理解决方案。系统支持学生信息的增删改查、用户管理、申诉处理等功能，并具有不同角色的权限管理。
 
-- `index.html` - 网站首页，包含项目介绍、功能特点、系统架构、使用说明和下载信息
-- `.nojekyll` - 确保 GitHub Pages 正确处理网站文件
+## 系统架构
 
-## 部署说明
+### 核心模块
 
-1. 确保你的项目已经推送到 GitHub 仓库 `https://github.com/Mercury-Ghost/SIMS`
-2. 在 GitHub 仓库的设置页面中，找到 "Pages" 选项
-3. 在 "Source" 部分，选择 "main" 分支，并将目录设置为 "/docs"
-4. 点击 "Save" 按钮保存设置
-5. 等待几分钟，GitHub Pages 会自动构建并部署网站
-6. 部署完成后，你可以通过 `https://mercury-ghost.github.io/SIMS/` 访问网站
+- **学生信息管理**：处理学生基本信息和成绩的管理
+- **用户管理**：管理不同角色的用户账号
+- **申诉管理**：处理学生的申诉请求
+- **文件操作**：负责数据的持久化存储
+- **UI界面**：提供用户交互界面
+- **工具函数**：提供通用功能支持
+- **数据分析**：提供数据统计和分析功能
+- **页面管理**：处理分页显示功能
 
-## 网站特点
+### 系统角色
 
-- **响应式设计**：适配各种屏幕尺寸，包括桌面端、平板和手机
-- **现代界面**：使用 Tailwind CSS 和 Font Awesome 构建美观的用户界面
-- **流畅动画**：添加了平滑滚动和悬停效果，提升用户体验
-- **清晰结构**：包含项目介绍、功能特点、系统架构、使用说明和下载信息
-- **易于维护**：使用模块化的代码结构，便于后续更新和扩展
+- **学生**：查看个人信息，提交申诉
+- **教师**：管理学生信息，处理申诉
+- **管理员**：管理所有用户，拥有最高权限
 
-## 技术栈
+## 目录结构
 
-- **HTML5** - 网站结构
-- **Tailwind CSS** - 样式框架
-- **Font Awesome** - 图标库
-- **JavaScript** - 交互功能
+```
+SIMS/
+├── src/             # 源代码目录
+│   ├── analyze.c    # 数据分析模块
+│   ├── analyze.h
+│   ├── appeal.c     # 申诉管理模块
+│   ├── appeal.h
+│   ├── backup.c     # 数据备份/恢复模块
+│   ├── backup.h
+│   ├── file.c       # 文件操作模块
+│   ├── file.h
+│   ├── main.c       # 主程序入口
+│   ├── page.c       # 页面管理模块
+│   ├── page.h
+│   ├── student.c    # 学生信息管理模块
+│   ├── student.h
+│   ├── ui.c         # 界面模块
+│   ├── ui.h
+│   ├── user.c       # 用户管理模块
+│   ├── user.h
+│   ├── utils.c      # 工具函数模块
+│   └── utils.h
+├── data/            # 数据文件目录
+│   ├── appeals.txt  # 申诉信息文件
+│   ├── backup_*.dat # 备份文件
+│   ├── last_backup.txt # 最后备份时间
+│   ├── students.csv # 学生数据CSV文件
+│   ├── students.dat # 学生信息二进制文件
+│   ├── students.txt # 学生信息文本文件
+│   └── users.txt    # 用户账号信息
+├── bin/             # 可执行文件目录
+│   └── sims.exe     # 可执行文件
 
-## 本地预览
+├── docs/            # 文档和GitHub Pages网站
+│   ├── images/       # 图片目录
+│   │   └── sims_interface.png # 系统界面图片
+│   ├── .nojekyll
+│   ├── index.html
+│   └── README.md
+├── .gitignore
+├── API.md
+├── README.md
+└── Roadmap.md
+```
 
-要在本地预览网站，可以使用以下方法：
+## 主要功能
 
-1. 安装一个本地服务器，如 `live-server`：
-   ```bash
-   npm install -g live-server
-   ```
+### 1. 学生信息管理
+- 添加学生信息
+- 删除学生信息
+- 修改学生信息
+- 查询学生信息（按ID或姓名）
+- 学生成绩排序
+- 学生信息统计分析
 
-2. 在 `docs` 目录中启动本地服务器：
-   ```bash
-   cd docs
-   live-server
-   ```
+### 2. 用户管理
+- 用户登录
+- 用户注册
+- 修改密码
+- 管理员重置用户密码
+- 管理员删除用户
 
-3. 在浏览器中访问 `http://localhost:8080` 查看网站
+### 3. 申诉管理
+- 学生提交申诉
+- 查看申诉列表
+- 标记申诉为已处理
+- 统计未处理申诉数量
 
-## 自定义
+### 4. 数据持久化
+- 自动加载数据文件
+- 自动保存数据到文件
+- 支持数据的备份和恢复
+- 批量导入/导出功能
+- 数据备份/恢复功能
+- 多条件查询功能
 
-如果需要自定义网站内容，可以修改 `index.html` 文件中的相应部分：
+## 技术特点
 
-- **项目介绍**：修改 Hero 区域的标题和描述
-- **功能特点**：修改功能卡片的内容和图标
-- **系统架构**：更新核心模块和系统角色的描述
-- **使用说明**：调整编译命令和功能操作示例
-- **下载信息**：更新下载链接和 GitHub 仓库地址
+- **纯C语言实现**：无需额外依赖，跨平台兼容性好
+- **模块化设计**：各功能模块独立封装，便于维护和扩展
+- **数据结构**：使用链表存储数据，操作灵活高效
+- **权限控制**：基于角色的权限管理，确保数据安全
+- **用户友好**：清晰的命令行界面，操作简单直观
+
+## 编译与运行
+
+### 编译
+
+使用C编译器编译所有源文件：
+
+```bash
+gcc -o bin/sims.exe src/main.c src/student.c src/user.c src/file.c src/appeal.c src/ui.c src/utils.c src/analyze.c src/page.c src/backup.c
+```
+
+### 运行
+
+直接运行生成的可执行文件：
+
+```bash
+./bin/sims.exe
+```
+
+## 使用说明
+
+### 登录系统
+1. 运行程序：`./bin/sims.exe`
+2. 在登录界面输入用户名和密码
+3. 系统会根据角色权限进入相应的功能界面
+
+### 功能操作示例
+
+#### 学生端功能
+1. **成绩查询**：选择菜单选项1，系统会显示你的当前成绩
+2. **班内排名**：选择菜单选项2，系统会显示你在班级中的排名
+3. **提交申诉**：选择菜单选项4，输入申诉内容，提交成绩申诉
+4. **修改密码**：选择菜单选项5，输入新密码，完成密码修改
+
+#### 教师端功能
+1. **添加学生**：选择菜单选项1-1，输入学号、姓名和成绩，添加新学生
+2. **删除学生**：选择菜单选项1-2，输入学号，删除对应学生
+3. **修改学生信息**：选择菜单选项1-3，输入学号和新信息，修改学生数据
+4. **成绩排序**：选择菜单选项1-7，选择升序或降序，对学生成绩排序
+5. **批量导入/导出**：选择菜单选项3，可从CSV文件导入学生数据或导出学生数据为CSV格式
+6. **数据备份/恢复**：选择菜单选项4，可手动备份数据、从备份文件恢复数据或查看所有备份文件
+7. **多条件查询**：选择菜单选项5，可按姓名、学号、成绩范围等条件查询学生信息，并对结果进行排序
+
+#### 管理员端功能
+1. **申诉管理**：选择菜单选项1，查看所有申诉并标记处理状态
+2. **添加用户**：选择菜单选项2-2，输入用户名、密码和角色，添加新用户
+3. **重置密码**：选择菜单选项2-4，输入用户名和新密码，重置用户密码
+4. **批量导入**：选择菜单选项3，输入文件名，批量导入用户数据
+
+### 退出系统
+- 在各功能菜单中，选择退出选项返回上一级菜单
+- 在登录界面选择退出选项，退出系统
+
+### 初始账号
+
+- **管理员**：用户名：admin，密码：admin
+- **教师**：用户名：teacher，密码：teacher
+- **学生**：系统初始无学生账号，需要通过注册或管理员添加
+
+## 数据文件说明
+
+- **users.txt**：存储用户账号信息
+- **students.dat**：存储学生信息（二进制文件，系统自动生成）
+- **appeals.txt**：存储申诉信息（系统自动生成）
 
 ## 注意事项
 
-- 确保所有链接和资源路径正确
-- 保持网站内容与项目实际情况一致
-- 定期更新网站内容，以反映项目的最新状态
+1. 系统使用简单的文件存储，不支持并发操作
+2. 密码以明文形式存储，仅用于演示，实际应用中应加密存储
+3. 数据文件应妥善保管，避免误删除
+4. 系统未实现网络功能，仅支持本地运行
+
+## 扩展建议
+
+1. 添加数据库支持，提高数据存储的可靠性和效率
+2. 实现网络功能，支持多用户同时访问
+3. 增加更多数据分析和报表功能
+4. 开发图形化界面，提升用户体验
+
+## 许可证
+
+本项目采用 MIT 许可证开源。
+
+### MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## 作者
+
+- 项目维护者：Mercury-Ghost
+- 联系邮箱：sbc0124@outlook.com
+
+---
+
+(c) 2026 SIMS 学生信息管理系统

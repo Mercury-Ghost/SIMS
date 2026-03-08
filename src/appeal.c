@@ -12,7 +12,12 @@ AppealNode *appealHead = NULL;
  * 从appeals.txt加载申诉
  */
 void loadAppeals() {
-    FILE *fp = fopen("appeals.txt", "r");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "appeals.txt", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "r");
     if (!fp) return;
     char line[256];
     while (fgets(line, sizeof(line), fp)) {
@@ -66,7 +71,12 @@ void loadAppeals() {
  * 保存申诉到appeals.txt
  */
 void saveAppeals() {
-    FILE *fp = fopen("appeals.txt", "w");
+    char dataDir[MAX_PATH_LEN];
+    char filePath[MAX_PATH_LEN];
+    getDataDir(dataDir, sizeof(dataDir));
+    buildFilePath(dataDir, "appeals.txt", filePath, sizeof(filePath));
+    
+    FILE *fp = fopen(filePath, "w");
     if (!fp) return;
     AppealNode *cur = appealHead;
     while (cur) {

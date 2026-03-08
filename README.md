@@ -57,7 +57,7 @@ SIMS/
 │   └── users.txt    # 用户账号信息
 ├── bin/             # 可执行文件目录
 │   └── sims.exe     # 可执行文件
-├── build/           # 构建目录
+
 ├── docs/            # 文档和GitHub Pages网站
 │   ├── .nojekyll
 │   ├── index.html

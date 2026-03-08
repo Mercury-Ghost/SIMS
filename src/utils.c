@@ -1,5 +1,9 @@
 #include "utils.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 /**
  * 清屏（跨平台）
  */
@@ -9,6 +13,66 @@ void clearScreen() {
 #else
     system("clear");
 #endif
+}
+
+/**
+ * 获取项目根目录路径
+ * @param path 输出路径缓冲区
+ * @param size 缓冲区大小
+ */
+void getProjectRoot(char *path, size_t size) {
+#ifdef _WIN32
+    char exePath[MAX_PATH_LEN];
+    GetModuleFileName(NULL, exePath, MAX_PATH_LEN);
+    // 从可执行文件路径向上导航到项目根目录
+    char *lastSlash = strrchr(exePath, '\\');
+    if (lastSlash) {
+        *lastSlash = '\0'; // 移除可执行文件名
+        lastSlash = strrchr(exePath, '\\');
+        if (lastSlash) {
+            *lastSlash = '\0'; // 移除bin目录
+        }
+    }
+    strncpy(path, exePath, size - 1);
+    path[size - 1] = '\0';
+#else
+    // 对于其他平台，假设当前目录就是项目根目录
+    getcwd(path, size);
+#endif
+}
+
+/**
+ * 获取数据目录路径
+ * @param path 输出路径缓冲区
+ * @param size 缓冲区大小
+ */
+void getDataDir(char *path, size_t size) {
+    getProjectRoot(path, size);
+    strncat(path, "\\data", size - strlen(path) - 1);
+}
+
+/**
+ * 获取bin目录路径
+ * @param path 输出路径缓冲区
+ * @param size 缓冲区大小
+ */
+void getBinDir(char *path, size_t size) {
+    getProjectRoot(path, size);
+    strncat(path, "\\bin", size - strlen(path) - 1);
+}
+
+/**
+ * 构建完整的文件路径
+ * @param dir 目录路径
+ * @param filename 文件名
+ * @param path 输出路径缓冲区
+ * @param size 缓冲区大小
+ */
+void buildFilePath(const char *dir, const char *filename, char *path, size_t size) {
+    strncpy(path, dir, size - 1);
+    strncat(path, "\\", size - strlen(path) - 1);
+    strncat(path, filename, size - strlen(path) - 1);
+    path[size - 1] = '\0';
 }
 
 /**
