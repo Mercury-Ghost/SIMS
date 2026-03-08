@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMS - 学生信息管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        nav a:hover {
+            color: #3b82f6;
+            background-color: #f1f5f9;
+        }
+        
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            margin-bottom: 1.5rem;
+            color: #3b82f6;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #3b82f6;
+        }
+        
+        .feature-item h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .role-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .role-card h4 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #3b82f6;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .role-card ul {
+            list-style: none;
+        }
+        
+        .role-card li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .role-card li:before {
+            content: "?";
+            color: #10b981;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .code-block {
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-links {
+            margin: 1.5rem 0;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .feature-item,
+            .role-card {
+                padding: 1.5rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                width: 100%;
+                text-align: center;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <h1>SIMS</h1>
+            <h2>学生信息管理系统</h2>
+            <p>基于C语言开发的学生信息管理解决方案，为学校提供简单、高效的学生信息管理功能</p>
+            <a href="https://github.com/Mercury-Ghost/SIMS" class="button" target="_blank">
+                查看GitHub仓库
+            </a>
+        </div>
+    </header>
+    
+    <!-- 导航 -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#home">首页</a>
+            <a href="#features">功能介绍</a>
+            <a href="#architecture">系统架构</a>
+            <a href="#installation">安装指南</a>
+            <a href="#usage">使用文档</a>
+            <a href="#about">关于项目</a>
+        </div>
+    </nav>
+    
+    <!-- 首页 -->
+    <section id="home">
+        <div class="container">
+            <h2 class="section-title">项目简介</h2>
+            <div class="card">
+                <p>SIMS（Student Information Management System）是一个基于C语言开发的学生信息管理系统，旨在为学校提供一个简单、高效的学生信息管理解决方案。系统支持学生信息的增删改查、用户管理、申诉处理等功能，并具有不同角色的权限管理。</p>
+            </div>
+            
+            <h2 class="section-title">核心特点</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">??</div>
+                    <h4>纯C语言实现</h4>
+                    <p>无需额外依赖，跨平台兼容性好，运行效率高</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">?</div>
+                    <h4>模块化设计</h4>
+                    <p>各功能模块独立封装，便于维护和扩展</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">?</div>
+                    <h4>权限控制</h4>
+                    <p>基于角色的权限管理，确保数据安全</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">?</div>
+                    <h4>数据持久化</h4>
+                    <p>自动加载和保存数据，支持备份和恢复功能</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">?</div>
+                    <h4>数据分析</h4>
+                    <p>提供数据统计和分析功能</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">??</div>
+                    <h4>用户友好</h4>
+                    <p>清晰的命令行界面，操作简单直观</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 功能介绍 -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">功能介绍</h2>
+            
+            <div class="card">
+                <h3>学生信息管理</h3>
+                <ul>
+                    <li>添加学生信息</li>
+                    <li>删除学生信息</li>
+                    <li>修改学生信息</li>
+                    <li>查询学生信息（按ID或姓名）</li>
+                    <li>学生成绩排序</li>
+                    <li>学生信息统计分析</li>
+                    <li>批量导入/导出功能</li>
+                    <li>多条件查询功能</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>用户管理</h3>
+                <ul>
+                    <li>用户登录</li>
+                    <li>用户注册</li>
+                    <li>修改密码</li>
+                    <li>管理员重置用户密码</li>
+                    <li>管理员删除用户</li>
+                    <li>批量导入用户数据</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>申诉管理</h3>
+                <ul>
+                    <li>学生提交申诉</li>
+                    <li>查看申诉列表</li>
+                    <li>标记申诉为已处理</li>
+                    <li>统计未处理申诉数量</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>数据持久化</h3>
+                <ul>
+                    <li>自动加载数据文件</li>
+                    <li>自动保存数据到文件</li>
+                    <li>支持数据的备份和恢复</li>
+                    <li>数据文件管理</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 系统架构 -->
+    <section id="architecture">
+        <div class="container">
+            <h2 class="section-title">系统架构</h2>
+            
+            <div class="card">
+                <h3>核心模块</h3>
+                <ul>
+                    <li>学生信息管理：处理学生基本信息和成绩的管理</li>
+                    <li>用户管理：管理不同角色的用户账号</li>
+                    <li>申诉管理：处理学生的申诉请求</li>
+                    <li>文件操作：负责数据的持久化存储</li>
+                    <li>UI界面：提供用户交互界面</li>
+                    <li>工具函数：提供通用功能支持</li>
+                    <li>数据分析：提供数据统计和分析功能</li>
+                    <li>页面管理：处理分页显示功能</li>
+                </ul>
+            </div>
+            
+            <h2 class="section-title">系统角色</h2>
+            <div class="role-grid">
+                <div class="role-card">
+                    <h4>学生</h4>
+                    <ul>
+                        <li>查看个人信息</li>
+                        <li>提交申诉</li>
+                        <li>修改个人密码</li>
+                        <li>查询成绩和排名</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <h4>教师</h4>
+                    <ul>
+                        <li>管理学生信息</li>
+                        <li>处理申诉</li>
+                        <li>数据备份/恢复</li>
+                        <li>批量导入/导出</li>
+                        <li>成绩排序和分析</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <h4>管理员</h4>
+                    <ul>
+                        <li>管理所有用户</li>
+                        <li>拥有最高权限</li>
+                        <li>重置用户密码</li>
+                        <li>批量导入用户数据</li>
+                        <li>申诉管理</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 安装指南 -->
+    <section id="installation">
+        <div class="container">
+            <h2 class="section-title">安装指南</h2>
+            
+            <div class="card">
+                <h3>编译</h3>
+                <p>使用C编译器编译所有源文件：</p>
+                <div class="code-block">
+                    <code>gcc -o student_sys.exe main.c student.c user.c file.c appeal.c ui.c utils.c analyze.c page.c backup.c</code>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>运行</h3>
+                <p>直接运行生成的可执行文件：</p>
+                <div class="code-block">
+                    <code>./sims.exe</code>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>初始账号</h3>
+                <ul>
+                    <li><strong>管理员：</strong>用户名：admin，密码：admin</li>
+                    <li><strong>教师：</strong>用户名：teacher，密码：teacher</li>
+                    <li><strong>学生：</strong>系统初始无学生账号，需要通过注册或管理员添加</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 使用文档 -->
+    <section id="usage">
+        <div class="container">
+            <h2 class="section-title">使用文档</h2>
+            
+            <div class="card">
+                <h3>登录系统</h3>
+                <ol>
+                    <li>运行程序：<code>./sims.exe</code></li>
+                    <li>在登录界面输入用户名和密码</li>
+                    <li>系统会根据角色权限进入相应的功能界面</li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <h3>功能操作示例</h3>
+                <h4>学生端功能</h4>
+                <ol>
+                    <li><strong>成绩查询</strong>：选择菜单选项1，系统会显示你的当前成绩</li>
+                    <li><strong>班内排名</strong>：选择菜单选项2，系统会显示你在班级中的排名</li>
+                    <li><strong>提交申诉</strong>：选择菜单选项4，输入申诉内容，提交成绩申诉</li>
+                    <li><strong>修改密码</strong>：选择菜单选项5，输入新密码，完成密码修改</li>
+                </ol>
+                
+                <h4>教师端功能</h4>
+                <ol>
+                    <li><strong>添加学生</strong>：选择菜单选项1-1，输入学号、姓名和成绩，添加新学生</li>
+                    <li><strong>删除学生</strong>：选择菜单选项1-2，输入学号，删除对应学生</li>
+                    <li><strong>修改学生信息</strong>：选择菜单选项1-3，输入学号和新信息，修改学生数据</li>
+                    <li><strong>成绩排序</strong>：选择菜单选项1-7，选择升序或降序，对学生成绩排序</li>
+                    <li><strong>批量导入/导出</strong>：选择菜单选项3，可从CSV文件导入学生数据或导出学生数据为CSV格式</li>
+                    <li><strong>数据备份/恢复</strong>：选择菜单选项4，可手动备份数据、从备份文件恢复数据或查看所有备份文件</li>
+                    <li><strong>多条件查询</strong>：选择菜单选项5，可按姓名、学号、成绩范围等条件查询学生信息，并对结果进行排序</li>
+                </ol>
+                
+                <h4>管理员端功能</h4>
+                <ol>
+                    <li><strong>申诉管理</strong>：选择菜单选项1，查看所有申诉并标记处理状态</li>
+                    <li><strong>添加用户</strong>：选择菜单选项2-2，输入用户名、密码和角色，添加新用户</li>
+                    <li><strong>重置密码</strong>：选择菜单选项2-4，输入用户名和新密码，重置用户密码</li>
+                    <li><strong>批量导入</strong>：选择菜单选项3，输入文件名，批量导入用户数据</li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <h3>退出系统</h3>
+                <ul>
+                    <li>在各功能菜单中，选择退出选项返回上一级菜单</li>
+                    <li>在登录界面选择退出选项，退出系统</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 关于项目 -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">关于项目</h2>
+            
+            <div class="card">
+                <h3>项目信息</h3>
+                <ul>
+                    <li><strong>项目名称：</strong>SIMS - 学生信息管理系统</li>
+                    <li><strong>开发语言：</strong>C语言</li>
+                    <li><strong>许可证：</strong>MIT License</li>
+                    <li><strong>年份：</strong>2026</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>作者信息</h3>
+                <ul>
+                    <li><strong>项目维护者：</strong>Mercury-Ghost</li>
+                    <li><strong>联系邮箱：</strong>sbc0124@outlook.com</li>
+                    <li><strong>GitHub仓库：</strong><a href="https://github.com/Mercury-Ghost/SIMS" target="_blank">https://github.com/Mercury-Ghost/SIMS</a></li>
+                </ul>
+                
+                <h3>扩展建议</h3>
+                <ul>
+                    <li>添加数据库支持，提高数据存储的可靠性和效率</li>
+                    <li>实现网络功能，支持多用户同时访问</li>
+                    <li>增加更多数据分析和报表功能</li>
+                    <li>开发图形化界面，提升用户体验</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container footer-content">
+            <h3>SIMS - 学生信息管理系统</h3>
+            <div class="footer-links">
+                <a href="https://github.com/Mercury-Ghost/SIMS" target="_blank">GitHub</a>
+                <a href="#home">首页</a>
+                <a href="#features">功能</a>
+                <a href="#about">关于</a>
+            </div>
+            <p>? 2026 SIMS 学生信息管理系统</p>
+            <p>基于MIT许可证开源</p>
+        </div>
+    </footer>
+</body>
+</html>
